@@ -29,6 +29,15 @@ type Log struct {
 	Removed          bool     `json:"removed"`
 }
 
+// Block is the subset of eth_getBlockByNumber needed by the scanner.
+type Block struct {
+	Number     string `json:"number"`
+	Hash       string `json:"hash"`
+	ParentHash string `json:"parentHash"`
+	Timestamp  string `json:"timestamp"`
+}
+
+// NewClient returns a JSON-RPC client for an EVM endpoint.
 func NewClient(url string) *Client {
 	return &Client{
 		url:        strings.TrimSpace(url),
@@ -36,6 +45,7 @@ func NewClient(url string) *Client {
 	}
 }
 
+// BlockNumber returns the latest block height reported by the RPC endpoint.
 func (c *Client) BlockNumber(ctx context.Context) (uint64, error) {
 	var hex string
 	if err := c.call(ctx, "eth_blockNumber", []any{}, &hex); err != nil {
@@ -44,6 +54,16 @@ func (c *Client) BlockNumber(ctx context.Context) (uint64, error) {
 	return ParseHexUint64(hex)
 }
 
+// BlockByNumber returns block metadata for one block height.
+func (c *Client) BlockByNumber(ctx context.Context, number uint64) (Block, error) {
+	var block Block
+	if err := c.call(ctx, "eth_getBlockByNumber", []any{Uint64Hex(number), false}, &block); err != nil {
+		return Block{}, err
+	}
+	return block, nil
+}
+
+// FilterTransferLogs returns ERC20 Transfer logs for one token and block range.
 func (c *Client) FilterTransferLogs(ctx context.Context, fromBlock, toBlock uint64, tokenAddress string) ([]Log, error) {
 	filter := map[string]any{
 		"fromBlock": Uint64Hex(fromBlock),
@@ -110,10 +130,12 @@ func (c *Client) call(ctx context.Context, method string, params []any, result a
 	return nil
 }
 
+// Uint64Hex formats an integer as an Ethereum JSON-RPC hex quantity.
 func Uint64Hex(n uint64) string {
 	return "0x" + strconv.FormatUint(n, 16)
 }
 
+// ParseHexUint64 parses an Ethereum JSON-RPC hex quantity.
 func ParseHexUint64(value string) (uint64, error) {
 	value = strings.TrimPrefix(strings.ToLower(strings.TrimSpace(value)), "0x")
 	if value == "" {

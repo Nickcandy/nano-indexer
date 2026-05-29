@@ -68,8 +68,12 @@ func run(logger *slog.Logger) error {
 		return fmt.Errorf("ping mongo database %q: %w", cfg.Mongo.Database, err)
 	}
 	db := mongoClient.Database(cfg.Mongo.Database)
+	blockRepo := storage.NewBlockRepo(db)
 	transferRepo := storage.NewTransferRepo(db)
 	syncStateRepo := storage.NewSyncStateRepo(db)
+	if err := blockRepo.EnsureIndexes(ctx); err != nil {
+		return err
+	}
 	if err := transferRepo.EnsureIndexes(ctx); err != nil {
 		return err
 	}
@@ -79,7 +83,7 @@ func run(logger *slog.Logger) error {
 
 	if cfg.Scanner.Enabled {
 		ethClient := eth.NewClient(cfg.Eth.RPCURL)
-		indexer := scanner.New(cfg, ethClient, transferRepo, syncStateRepo, logger)
+		indexer := scanner.New(cfg, ethClient, transferRepo, syncStateRepo, blockRepo, logger)
 		go func() {
 			if err := indexer.Run(ctx); err != nil && !errors.Is(err, context.Canceled) {
 				logger.Error("scanner stopped", "error", err)

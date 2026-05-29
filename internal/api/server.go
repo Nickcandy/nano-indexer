@@ -1,16 +1,22 @@
 package api
 
 import (
+	"context"
 	"net/http"
 	"strconv"
 	"strings"
 
-	"nano-indexer/internal/storage"
+	"nano-indexer/internal/model"
 
 	"github.com/labstack/echo/v4"
 )
 
-func NewServer(transferRepo ...*storage.TransferRepo) *echo.Echo {
+type transferReader interface {
+	Find(ctx context.Context, chainID int64, address string, token string, limit int64) ([]model.TokenTransfer, error)
+	AddressSummary(ctx context.Context, chainID int64, address string) (model.AddressSummary, error)
+}
+
+func NewServer(transferRepo ...transferReader) *echo.Echo {
 	e := echo.New()
 	e.HideBanner = true
 	e.HidePort = true
@@ -45,6 +51,21 @@ func NewServer(transferRepo ...*storage.TransferRepo) *echo.Echo {
 				return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 			}
 			return c.JSON(http.StatusOK, transfers)
+		})
+		e.GET("/addresses/:address/summary", func(c echo.Context) error {
+			chainID, err := strconv.ParseInt(defaultString(c.QueryParam("chain_id"), "1"), 10, 64)
+			if err != nil {
+				return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid chain_id"})
+			}
+			address := strings.ToLower(strings.TrimSpace(c.Param("address")))
+			if !isHexAddress(address) {
+				return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid address"})
+			}
+			summary, err := repo.AddressSummary(c.Request().Context(), chainID, address)
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+			}
+			return c.JSON(http.StatusOK, summary)
 		})
 	}
 

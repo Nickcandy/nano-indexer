@@ -2,7 +2,7 @@
 
 > 立项时间：2026-05-28  
 > 项目性质：Web3 / Go / 链上数据方向面试主项目  
-> 当前阶段：立项与技术方案整理
+> 当前阶段：minimal ERC20 indexer MVP
 
 ## 项目定位
 
@@ -58,7 +58,7 @@
 | 日志 | `log/slog` |
 | 架构 | 简化版 Clean Architecture / DDD |
 | MVP 扫描对象 | 配置列表中的 ERC20 token |
-| Reorg 策略 | MVP 使用 confirmation window，后续补 block hash 校验 |
+| Reorg 策略 | MVP 使用 confirmation window，并落库 block hash；后续补自动校验和回滚 |
 
 ## 本地运行
 
@@ -73,6 +73,14 @@
 $env:SERVER_PORT="8080"
 $env:MONGO_URI="mongodb://localhost:27017"
 $env:MONGO_DATABASE="nano_indexer"
+$env:RPC_URL="https://your-rpc.example"
+$env:CHAIN_ID="8453"
+$env:CONFIRMATIONS="12"
+$env:DEFAULT_START_BLOCK="12345678"
+$env:BATCH_SIZE="100"
+$env:POLL_INTERVAL="10s"
+$env:SCANNER_ENABLED="true"
+$env:TOKEN_ADDRESSES="0xTokenAddress"
 ```
 
 启动服务：
@@ -93,10 +101,37 @@ Invoke-RestMethod http://localhost:8080/healthz
 {"status":"ok"}
 ```
 
+查询转账：
+
+```powershell
+Invoke-RestMethod "http://localhost:8080/transfers?chain_id=8453&address=0x1111111111111111111111111111111111111111&limit=50"
+Invoke-RestMethod "http://localhost:8080/transfers?chain_id=8453&token=0xTokenAddress&limit=50"
+```
+
+查询地址摘要：
+
+```powershell
+Invoke-RestMethod "http://localhost:8080/addresses/0x1111111111111111111111111111111111111111/summary?chain_id=8453"
+```
+
+本地 demo 验证点：
+
+1. `sync_states` 中对应 token 的 `latest_scanned_block` 持续推进。
+2. `token_transfers` 中写入 `chain_id + tx_hash + log_index` 去重后的转账记录。
+3. `blocks` 中写入已扫描区间的 block hash 和 parent hash。
+4. `/transfers` 能查出刚写入的数据。
+
 运行测试：
 
 ```powershell
 go test ./...
+```
+
+Mongo 幂等写入集成测试默认跳过；如需运行，先设置测试库地址：
+
+```powershell
+$env:NANO_INDEXER_MONGO_TEST_URI="mongodb://localhost:27017"
+go test -v ./internal/storage -run TestTransferRepoUpsertManyIsIdempotent
 ```
 
 ## 当前已完成
@@ -107,11 +142,21 @@ go test ./...
 - MongoDB 连接与 ping。
 - Echo HTTP server。
 - `GET /healthz`。
-- config 和 healthz 单元测试。
+- `GET /transfers`。
+- `GET /addresses/:address/summary`。
+- ERC20 `Transfer` scanner。
+- `blocks`、`token_transfers`、`sync_states` 集合与索引。
+- config、healthz、parser、API、scanner 和 storage 关键单元测试。
+
+## 当前限制
+
+- reorg 当前只通过 confirmation window 降低风险。
+- `blocks` 已保存 hash 和 parent hash，但还没有自动 hash 校验、orphan 标记或区间回滚。
+- scanner 是单进程、按配置 token 扫描，不做全链 token 发现。
 
 ## 下一步
 
-1. 定义 `blocks`、`token_transfers`、`sync_states` 三个核心集合与索引。
-2. 实现 ERC20 `Transfer` log parser 的单元测试。
-3. 实现最小 scanner：读取进度、拉 logs、解析、写入、推进进度。
-4. 暴露转账查询 API。
+1. 增加最近 N 个已确认 block hash 校验。
+2. 检测到 reorg 后标记 orphan block 和 removed transfers。
+3. 从共同祖先附近重新扫描。
+4. 为 `smart-money-radar` 增加地址/token 统计 API。

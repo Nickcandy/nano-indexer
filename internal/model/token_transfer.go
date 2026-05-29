@@ -19,3 +19,15 @@ type TokenTransfer struct {
 	CreatedAt    time.Time `bson:"created_at" json:"created_at"`
 	UpdatedAt    time.Time `bson:"updated_at" json:"updated_at"`
 }
+
+// AddressSummary is the minimal aggregate view for transfers involving one address.
+type AddressSummary struct {
+	ChainID       int64    `bson:"chain_id" json:"chain_id"`
+	Address       string   `bson:"address" json:"address"`
+	SentCount     int64    `bson:"sent_count" json:"sent_count"`
+	ReceivedCount int64    `bson:"received_count" json:"received_count"`
+	TotalCount    int64    `bson:"total_count" json:"total_count"`
+	LatestBlock   uint64   `bson:"latest_block" json:"latest_block"`
+	TokenCount    int      `bson:"token_count" json:"token_count"`
+	Tokens        []string `bson:"tokens" json:"tokens"`
+}

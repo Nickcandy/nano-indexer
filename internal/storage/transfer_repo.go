@@ -90,3 +90,51 @@ func (r *TransferRepo) Find(ctx context.Context, chainID int64, address string, 
 	}
 	return transfers, nil
 }
+
+// AddressSummary aggregates transfer counts and token coverage for one address.
+func (r *TransferRepo) AddressSummary(ctx context.Context, chainID int64, address string) (model.AddressSummary, error) {
+	address = strings.ToLower(address)
+	pipeline := mongo.Pipeline{
+		{{Key: "$match", Value: bson.M{
+			"chain_id": chainID,
+			"removed":  false,
+			"$or":      bson.A{bson.M{"from_address": address}, bson.M{"to_address": address}},
+		}}},
+		{{Key: "$group", Value: bson.M{
+			"_id":            nil,
+			"sent_count":     bson.M{"$sum": bson.M{"$cond": bson.A{bson.M{"$eq": bson.A{"$from_address", address}}, 1, 0}}},
+			"received_count": bson.M{"$sum": bson.M{"$cond": bson.A{bson.M{"$eq": bson.A{"$to_address", address}}, 1, 0}}},
+			"total_count":    bson.M{"$sum": 1},
+			"latest_block":   bson.M{"$max": "$block_number"},
+			"tokens":         bson.M{"$addToSet": "$token_address"},
+		}}},
+		{{Key: "$project", Value: bson.M{
+			"_id":            0,
+			"chain_id":       chainID,
+			"address":        address,
+			"sent_count":     1,
+			"received_count": 1,
+			"total_count":    1,
+			"latest_block":   1,
+			"token_count":    bson.M{"$size": "$tokens"},
+			"tokens":         1,
+		}}},
+	}
+	cursor, err := r.coll.Aggregate(ctx, pipeline)
+	if err != nil {
+		return model.AddressSummary{}, fmt.Errorf("aggregate address summary: %w", err)
+	}
+	defer func() { _ = cursor.Close(ctx) }()
+
+	if cursor.Next(ctx) {
+		var summary model.AddressSummary
+		if err := cursor.Decode(&summary); err != nil {
+			return model.AddressSummary{}, fmt.Errorf("decode address summary: %w", err)
+		}
+		return summary, nil
+	}
+	if err := cursor.Err(); err != nil {
+		return model.AddressSummary{}, fmt.Errorf("read address summary: %w", err)
+	}
+	return model.AddressSummary{ChainID: chainID, Address: address, Tokens: []string{}}, nil
+}
