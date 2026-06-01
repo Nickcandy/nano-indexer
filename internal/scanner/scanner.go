@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"sort"
 	"strings"
 	"time"
 
@@ -24,15 +25,19 @@ type ethReader interface {
 
 type transferWriter interface {
 	UpsertMany(ctx context.Context, transfers []model.TokenTransfer) error
+	MarkRemovedFrom(ctx context.Context, chainID int64, fromBlock uint64) error
 }
 
 type syncStateStore interface {
 	GetOrCreate(ctx context.Context, chainID int64, scannerName string, tokenAddress string, fromBlock uint64, confirmations uint64) (model.SyncState, error)
 	UpdateProgress(ctx context.Context, state model.SyncState, scannedBlock uint64, confirmedBlock uint64) error
+	RollbackScanner(ctx context.Context, chainID int64, scannerName string, rollbackTo uint64, confirmedBlock uint64) error
 }
 
 type blockWriter interface {
 	UpsertMany(ctx context.Context, blocks []model.Block) error
+	FindCanonicalRange(ctx context.Context, chainID int64, from uint64, to uint64) ([]model.Block, error)
+	MarkOrphanedFrom(ctx context.Context, chainID int64, fromBlock uint64) error
 }
 
 type Scanner struct {
@@ -89,6 +94,10 @@ func (s *Scanner) scanToken(ctx context.Context, token string, safeBlock uint64)
 	if err != nil {
 		return err
 	}
+	state, err = s.checkReorg(ctx, state, safeBlock)
+	if err != nil {
+		return err
+	}
 	from := state.LatestScannedBlock + 1
 	if from > safeBlock {
 		return nil
@@ -113,7 +122,7 @@ func (s *Scanner) scanToken(ctx context.Context, token string, safeBlock uint64)
 	if err := s.transfers.UpsertMany(ctx, transfers); err != nil {
 		return err
 	}
-	blocks, err := s.fetchBlocks(ctx, from, to)
+	blocks, err := s.collectBlocks(ctx, from, to, transfers)
 	if err != nil {
 		return err
 	}
@@ -125,6 +134,108 @@ func (s *Scanner) scanToken(ctx context.Context, token string, safeBlock uint64)
 	}
 	s.logger.Info("scanned transfer logs", "token", token, "from", from, "to", to, "logs", len(logs))
 	return nil
+}
+
+func (s *Scanner) checkReorg(ctx context.Context, state model.SyncState, safeBlock uint64) (model.SyncState, error) {
+	if s.cfg.Eth.Confirmations == 0 || state.LatestScannedBlock < state.FromBlock {
+		return state, nil
+	}
+	from := state.FromBlock
+	if state.LatestScannedBlock >= s.cfg.Eth.Confirmations {
+		from = state.LatestScannedBlock - s.cfg.Eth.Confirmations + 1
+		if from < state.FromBlock {
+			from = state.FromBlock
+		}
+	}
+	to := state.LatestScannedBlock
+	storedBlocks, err := s.blocks.FindCanonicalRange(ctx, state.ChainID, from, to)
+	if err != nil {
+		return state, err
+	}
+	byNumber := make(map[uint64]model.Block, len(storedBlocks))
+	for _, block := range storedBlocks {
+		byNumber[block.BlockNumber] = block
+	}
+	for blockNumber := from; blockNumber <= to; blockNumber++ {
+		storedBlock, ok := byNumber[blockNumber]
+		if !ok {
+			return state, fmt.Errorf("canonical block %d missing for scanned progress", blockNumber)
+		}
+		rpcBlock, err := s.ethClient.BlockByNumber(ctx, blockNumber)
+		if err != nil {
+			return state, fmt.Errorf("check reorg block %d: %w", blockNumber, err)
+		}
+		if !strings.EqualFold(rpcBlock.Hash, storedBlock.BlockHash) {
+			rollbackTo := uint64(0)
+			if blockNumber > 0 {
+				rollbackTo = blockNumber - 1
+			}
+			if err := s.blocks.MarkOrphanedFrom(ctx, state.ChainID, blockNumber); err != nil {
+				return state, err
+			}
+			if err := s.transfers.MarkRemovedFrom(ctx, state.ChainID, blockNumber); err != nil {
+				return state, err
+			}
+			if err := s.states.RollbackScanner(ctx, state.ChainID, scannerName, rollbackTo, safeBlock); err != nil {
+				return state, err
+			}
+			state.LatestScannedBlock = rollbackTo
+			state.LatestConfirmedBlock = safeBlock
+			s.logger.Warn("reorg detected; scanner progress rolled back", "from_block", blockNumber, "rollback_to", rollbackTo)
+			return state, nil
+		}
+	}
+	return state, nil
+}
+
+func (s *Scanner) collectBlocks(ctx context.Context, from uint64, to uint64, transfers []model.TokenTransfer) ([]model.Block, error) {
+	blocksByNumber := make(map[uint64]model.Block)
+	now := time.Now().UTC()
+	for _, transfer := range transfers {
+		if _, ok := blocksByNumber[transfer.BlockNumber]; ok {
+			continue
+		}
+		blocksByNumber[transfer.BlockNumber] = model.Block{
+			ChainID:     s.cfg.Eth.ChainID,
+			BlockNumber: transfer.BlockNumber,
+			BlockHash:   strings.ToLower(transfer.BlockHash),
+			BlockTime:   transfer.EventTime,
+			Status:      "canonical",
+			CreatedAt:   now,
+			UpdatedAt:   now,
+		}
+	}
+
+	if s.cfg.Eth.Confirmations > 0 {
+		headerFrom := recentBlockWindowStart(from, to, s.cfg.Eth.Confirmations)
+		headerBlocks, err := s.fetchBlocks(ctx, headerFrom, to)
+		if err != nil {
+			return nil, err
+		}
+		for _, block := range headerBlocks {
+			blocksByNumber[block.BlockNumber] = block
+		}
+	}
+
+	blocks := make([]model.Block, 0, len(blocksByNumber))
+	for _, block := range blocksByNumber {
+		blocks = append(blocks, block)
+	}
+	sort.Slice(blocks, func(i, j int) bool {
+		return blocks[i].BlockNumber < blocks[j].BlockNumber
+	})
+	return blocks, nil
+}
+
+func recentBlockWindowStart(from uint64, to uint64, confirmations uint64) uint64 {
+	start := from
+	if to >= confirmations {
+		start = to - confirmations + 1
+		if start < from {
+			start = from
+		}
+	}
+	return start
 }
 
 func (s *Scanner) fetchBlocks(ctx context.Context, from uint64, to uint64) ([]model.Block, error) {

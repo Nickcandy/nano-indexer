@@ -75,3 +75,22 @@ func (r *SyncStateRepo) UpdateProgress(ctx context.Context, state model.SyncStat
 	}
 	return nil
 }
+
+func (r *SyncStateRepo) RollbackScanner(ctx context.Context, chainID int64, scannerName string, rollbackTo uint64, confirmedBlock uint64) error {
+	filter := bson.M{
+		"chain_id":             chainID,
+		"scanner_name":         scannerName,
+		"latest_scanned_block": bson.M{"$gt": rollbackTo},
+	}
+	update := bson.M{"$set": bson.M{
+		"latest_scanned_block":   rollbackTo,
+		"latest_confirmed_block": confirmedBlock,
+		"status":                 "running",
+		"last_error":             "",
+		"updated_at":             time.Now().UTC(),
+	}}
+	if _, err := r.coll.UpdateMany(ctx, filter, update); err != nil {
+		return fmt.Errorf("rollback sync state progress: %w", err)
+	}
+	return nil
+}

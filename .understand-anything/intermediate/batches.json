@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "louvain",
+  "totalFiles": 26,
+  "totalBatches": 2,
+  "exportsByPath": {
+    "cmd/indexer/main.go": [],
+    "internal/api/server_test.go": [
+      "TestHealthzReturnsOK",
+      "TestTransfersRejectsMissingFilters",
+      "TestTransfersRejectsInvalidLimit",
+      "TestTransfersReturnsRepoResults",
+      "TestAddressSummaryReturnsRepoResult",
+      "Find",
+      "AddressSummary"
+    ],
+    "internal/api/server.go": [
+      "NewServer"
+    ],
+    "internal/config/config_test.go": [
+      "TestLoadUsesDefaults",
+      "TestLoadUsesEnvironmentOverrides"
+    ],
+    "internal/config/config.go": [
+      "Config",
+      "ServerConfig",
+      "Addr",
+      "MongoConfig",
+      "EthConfig",
+      "ScannerConfig",
+      "Load",
+      "LoadDotEnv"
+    ],
+    "internal/eth/client.go": [
+      "Client",
+      "Log",
+      "Block",
+      "NewClient",
+      "BlockNumber",
+      "BlockByNumber",
+      "FilterTransferLogs",
+      "Uint64Hex",
+      "ParseHexUint64"
+    ],
+    "internal/eth/logs.go": [],
+    "internal/model/block.go": [
+      "Block"
+    ],
+    "internal/model/sync_state.go": [
+      "SyncState"
+    ],
+    "internal/model/token_transfer.go": [
+      "TokenTransfer",
+      "AddressSummary"
+    ],
+    "internal/parser/erc20_test.go": [
+      "TestParseERC20Transfer",
+      "TestParseERC20TransferRejectsWrongTopic"
+    ],
+    "internal/parser/erc20.go": [
+      "ParseERC20Transfer"
+    ],
+    "internal/scanner/scanner_test.go": [
+      "TestScanOnceReturnsRPCErrorWithoutUpdatingProgress",
+      "TestScanOnceWritesBlocksBeforeProgress",
+      "BlockNumber",
+      "BlockByNumber",
+      "FilterTransferLogs",
+      "UpsertMany",
+      "GetOrCreate",
+      "UpdateProgress",
+      "UpsertMany"
+    ],
+    "internal/scanner/scanner.go": [
+      "Scanner",
+      "New",
+      "Run",
+      "ScanOnce"
+    ],
+    "internal/storage/block_repo.go": [
+      "BlockRepo",
+      "NewBlockRepo",
+      "EnsureIndexes",
+      "UpsertMany"
+    ],
+    "internal/storage/mongo.go": [
+      "Connect",
+      "Ping",
+      "Disconnect"
+    ],
+    "internal/storage/sync_state_repo_test.go": [
+      "TestSyncStateUpdateProgressRejectsBackwardMove"
+    ],
+    "internal/storage/sync_state_repo.go": [
+      "SyncStateRepo",
+      "NewSyncStateRepo",
+      "EnsureIndexes",
+      "GetOrCreate",
+      "UpdateProgress"
+    ],
+    "internal/storage/transfer_repo_test.go": [
+      "TestTransferRepoUpsertManyIsIdempotent"
+    ],
+    "internal/storage/transfer_repo.go": [
+      "TransferRepo",
+      "NewTransferRepo",
+      "EnsureIndexes",
+      "UpsertMany",
+      "Find",
+      "AddressSummary"
+    ]
+  },
+  "batches": [
+    {
+      "batchIndex": 1,
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "config",
+          "sizeLines": 11,
+          "fileCategory": "config"
+        },
+        {
+          "path": "go.mod",
+          "language": "mod",
+          "sizeLines": 26,
+          "fileCategory": "config"
+        },
+        {
+          "path": "go.sum",
+          "language": "sum",
+          "sizeLines": 68,
+          "fileCategory": "config"
+        },
+        {
+          "path": "readme.md",
+          "language": "markdown",
+          "sizeLines": 162,
+          "fileCategory": "docs"
+        }
+      ],
+      "batchImportData": {
+        ".env.example": [],
+        "go.mod": [],
+        "go.sum": [],
+        "readme.md": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 2,
+      "files": [
+        {
+          "path": "cmd/indexer/main.go",
+          "language": "go",
+          "sizeLines": 119,
+          "fileCategory": "code"
+        },
+        {
+          "path": "docs/project-charter.md",
+          "language": "markdown",
+          "sizeLines": 119,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "docs/technical-design.md",
+          "language": "markdown",
+          "sizeLines": 311,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "internal/api/server_test.go",
+          "language": "go",
+          "sizeLines": 114,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/api/server.go",
+          "language": "go",
+          "sizeLines": 92,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/config/config_test.go",
+          "language": "go",
+          "sizeLines": 39,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/config/config.go",
+          "language": "go",
+          "sizeLines": 170,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/eth/client.go",
+          "language": "go",
+          "sizeLines": 149,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/eth/logs.go",
+          "language": "go",
+          "sizeLines": 3,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/model/block.go",
+          "language": "go",
+          "sizeLines": 15,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/model/sync_state.go",
+          "language": "go",
+          "sizeLines": 16,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/model/token_transfer.go",
+          "language": "go",
+          "sizeLines": 33,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/parser/erc20_test.go",
+          "language": "go",
+          "sizeLines": 47,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/parser/erc20.go",
+          "language": "go",
+          "sizeLines": 66,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/scanner/scanner_test.go",
+          "language": "go",
+          "sizeLines": 141,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/scanner/scanner.go",
+          "language": "go",
+          "sizeLines": 161,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/storage/block_repo.go",
+          "language": "go",
+          "sizeLines": 62,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/storage/mongo.go",
+          "language": "go",
+          "sizeLines": 21,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/storage/sync_state_repo_test.go",
+          "language": "go",
+          "sizeLines": 18,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/storage/sync_state_repo.go",
+          "language": "go",
+          "sizeLines": 77,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/storage/transfer_repo_test.go",
+          "language": "go",
+          "sizeLines": 65,
+          "fileCategory": "code"
+        },
+        {
+          "path": "internal/storage/transfer_repo.go",
+          "language": "go",
+          "sizeLines": 140,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "cmd/indexer/main.go": [],
+        "docs/project-charter.md": [],
+        "docs/technical-design.md": [],
+        "internal/api/server_test.go": [],
+        "internal/api/server.go": [],
+        "internal/config/config_test.go": [],
+        "internal/config/config.go": [],
+        "internal/eth/client.go": [],
+        "internal/eth/logs.go": [],
+        "internal/model/block.go": [],
+        "internal/model/sync_state.go": [],
+        "internal/model/token_transfer.go": [],
+        "internal/parser/erc20_test.go": [],
+        "internal/parser/erc20.go": [],
+        "internal/scanner/scanner_test.go": [],
+        "internal/scanner/scanner.go": [],
+        "internal/storage/block_repo.go": [],
+        "internal/storage/mongo.go": [],
+        "internal/storage/sync_state_repo_test.go": [],
+        "internal/storage/sync_state_repo.go": [],
+        "internal/storage/transfer_repo_test.go": [],
+        "internal/storage/transfer_repo.go": []
+      },
+      "neighborMap": {}
+    }
+  ]
+}

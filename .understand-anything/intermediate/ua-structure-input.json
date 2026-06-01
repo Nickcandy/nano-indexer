@@ -1,0 +1,126 @@
+{
+  "projectRoot": "/Users/nickcandy/Desktop/workspace/nano-indexer",
+  "batchFiles": [
+    {
+      "path": "cmd/indexer/main.go",
+      "language": "go",
+      "sizeLines": 119,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/api/server_test.go",
+      "language": "go",
+      "sizeLines": 114,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/api/server.go",
+      "language": "go",
+      "sizeLines": 92,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/config/config_test.go",
+      "language": "go",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/config/config.go",
+      "language": "go",
+      "sizeLines": 170,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/eth/client.go",
+      "language": "go",
+      "sizeLines": 149,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/eth/logs.go",
+      "language": "go",
+      "sizeLines": 3,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/model/block.go",
+      "language": "go",
+      "sizeLines": 15,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/model/sync_state.go",
+      "language": "go",
+      "sizeLines": 16,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/model/token_transfer.go",
+      "language": "go",
+      "sizeLines": 33,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/parser/erc20_test.go",
+      "language": "go",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/parser/erc20.go",
+      "language": "go",
+      "sizeLines": 66,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/scanner/scanner_test.go",
+      "language": "go",
+      "sizeLines": 141,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/scanner/scanner.go",
+      "language": "go",
+      "sizeLines": 161,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/storage/block_repo.go",
+      "language": "go",
+      "sizeLines": 62,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/storage/mongo.go",
+      "language": "go",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/storage/sync_state_repo_test.go",
+      "language": "go",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/storage/sync_state_repo.go",
+      "language": "go",
+      "sizeLines": 77,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/storage/transfer_repo_test.go",
+      "language": "go",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "internal/storage/transfer_repo.go",
+      "language": "go",
+      "sizeLines": 140,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": []
+}

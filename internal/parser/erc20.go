@@ -38,6 +38,14 @@ func ParseERC20Transfer(chainID int64, log eth.Log) (model.TokenTransfer, error)
 		return model.TokenTransfer{}, err
 	}
 	now := time.Now().UTC()
+	eventTime := now
+	if strings.TrimSpace(log.BlockTimestamp) != "" {
+		timestamp, err := eth.ParseHexUint64(log.BlockTimestamp)
+		if err != nil {
+			return model.TokenTransfer{}, fmt.Errorf("parse block timestamp: %w", err)
+		}
+		eventTime = time.Unix(int64(timestamp), 0).UTC()
+	}
 	return model.TokenTransfer{
 		ChainID:      chainID,
 		BlockNumber:  blockNumber,
@@ -51,7 +59,7 @@ func ParseERC20Transfer(chainID int64, log eth.Log) (model.TokenTransfer, error)
 		AmountRaw:    amount.String(),
 		Confirmed:    true,
 		Removed:      log.Removed,
-		EventTime:    now,
+		EventTime:    eventTime,
 		CreatedAt:    now,
 		UpdatedAt:    now,
 	}, nil

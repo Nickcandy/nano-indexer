@@ -1,0 +1,3870 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 20,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "cmd/indexer/main.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 119,
+      "nonEmptyLines": 109,
+      "functions": [
+        {
+          "name": "main",
+          "startLine": 21,
+          "endLine": 27,
+          "params": []
+        },
+        {
+          "name": "run",
+          "startLine": 29,
+          "endLine": 119,
+          "params": [
+            "logger"
+          ]
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "main",
+          "callee": "slog.New",
+          "lineNumber": 22
+        },
+        {
+          "caller": "main",
+          "callee": "slog.NewTextHandler",
+          "lineNumber": 22
+        },
+        {
+          "caller": "main",
+          "callee": "run",
+          "lineNumber": 23
+        },
+        {
+          "caller": "main",
+          "callee": "logger.Error",
+          "lineNumber": 24
+        },
+        {
+          "caller": "main",
+          "callee": "os.Exit",
+          "lineNumber": 25
+        },
+        {
+          "caller": "run",
+          "callee": "config.LoadDotEnv",
+          "lineNumber": 30
+        },
+        {
+          "caller": "run",
+          "callee": "logger.Warn",
+          "lineNumber": 31
+        },
+        {
+          "caller": "run",
+          "callee": "config.Load",
+          "lineNumber": 33
+        },
+        {
+          "caller": "run",
+          "callee": "logger.Info",
+          "lineNumber": 34
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 38
+        },
+        {
+          "caller": "run",
+          "callee": "fmt.Errorf",
+          "lineNumber": 43
+        },
+        {
+          "caller": "run",
+          "callee": "len",
+          "lineNumber": 45
+        },
+        {
+          "caller": "run",
+          "callee": "fmt.Errorf",
+          "lineNumber": 46
+        },
+        {
+          "caller": "run",
+          "callee": "logger.Warn",
+          "lineNumber": 49
+        },
+        {
+          "caller": "run",
+          "callee": "signal.NotifyContext",
+          "lineNumber": 52
+        },
+        {
+          "caller": "run",
+          "callee": "context.Background",
+          "lineNumber": 52
+        },
+        {
+          "caller": "run",
+          "callee": "stop",
+          "lineNumber": 53
+        },
+        {
+          "caller": "run",
+          "callee": "storage.Connect",
+          "lineNumber": 55
+        },
+        {
+          "caller": "run",
+          "callee": "fmt.Errorf",
+          "lineNumber": 57
+        },
+        {
+          "caller": "run",
+          "callee": "func() {\n\t\tshutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)\n\t\tdefer cancel()\n\t\tif err := storage.Disconnect(shutdownCtx, mongoClient); err != nil {\n\t\t\tlogger.Error(\"disconnect mongo\", \"error\", err)\n\t\t}\n\t}",
+          "lineNumber": 59
+        },
+        {
+          "caller": "run",
+          "callee": "context.WithTimeout",
+          "lineNumber": 60
+        },
+        {
+          "caller": "run",
+          "callee": "context.Background",
+          "lineNumber": 60
+        },
+        {
+          "caller": "run",
+          "callee": "cancel",
+          "lineNumber": 61
+        },
+        {
+          "caller": "run",
+          "callee": "storage.Disconnect",
+          "lineNumber": 62
+        },
+        {
+          "caller": "run",
+          "callee": "logger.Error",
+          "lineNumber": 63
+        },
+        {
+          "caller": "run",
+          "callee": "storage.Ping",
+          "lineNumber": 67
+        },
+        {
+          "caller": "run",
+          "callee": "fmt.Errorf",
+          "lineNumber": 68
+        },
+        {
+          "caller": "run",
+          "callee": "mongoClient.Database",
+          "lineNumber": 70
+        },
+        {
+          "caller": "run",
+          "callee": "storage.NewBlockRepo",
+          "lineNumber": 71
+        },
+        {
+          "caller": "run",
+          "callee": "storage.NewTransferRepo",
+          "lineNumber": 72
+        },
+        {
+          "caller": "run",
+          "callee": "storage.NewSyncStateRepo",
+          "lineNumber": 73
+        },
+        {
+          "caller": "run",
+          "callee": "blockRepo.EnsureIndexes",
+          "lineNumber": 74
+        },
+        {
+          "caller": "run",
+          "callee": "transferRepo.EnsureIndexes",
+          "lineNumber": 77
+        },
+        {
+          "caller": "run",
+          "callee": "syncStateRepo.EnsureIndexes",
+          "lineNumber": 80
+        },
+        {
+          "caller": "run",
+          "callee": "eth.NewClient",
+          "lineNumber": 85
+        },
+        {
+          "caller": "run",
+          "callee": "scanner.New",
+          "lineNumber": 86
+        },
+        {
+          "caller": "run",
+          "callee": "func() {\n\t\t\tif err := indexer.Run(ctx); err != nil && !errors.Is(err, context.Canceled) {\n\t\t\t\tlogger.Error(\"scanner stopped\", \"error\", err)\n\t\t\t\tstop()\n\t\t\t}\n\t\t}",
+          "lineNumber": 87
+        },
+        {
+          "caller": "run",
+          "callee": "indexer.Run",
+          "lineNumber": 88
+        },
+        {
+          "caller": "run",
+          "callee": "errors.Is",
+          "lineNumber": 88
+        },
+        {
+          "caller": "run",
+          "callee": "logger.Error",
+          "lineNumber": 89
+        },
+        {
+          "caller": "run",
+          "callee": "stop",
+          "lineNumber": 90
+        },
+        {
+          "caller": "run",
+          "callee": "api.NewServer",
+          "lineNumber": 95
+        },
+        {
+          "caller": "run",
+          "callee": "make",
+          "lineNumber": 96
+        },
+        {
+          "caller": "run",
+          "callee": "func() {\n\t\tlogger.Info(\"starting http server\", \"addr\", cfg.Server.Addr())\n\t\terr := server.Start(cfg.Server.Addr())\n\t\tif err != nil && !errors.Is(err, http.ErrServerClosed) {\n\t\t\terrCh <- err\n\t\t\treturn\n\t\t}\n\t\terrCh <- nil\n\t}",
+          "lineNumber": 97
+        },
+        {
+          "caller": "run",
+          "callee": "logger.Info",
+          "lineNumber": 98
+        },
+        {
+          "caller": "run",
+          "callee": "cfg.Server.Addr",
+          "lineNumber": 98
+        },
+        {
+          "caller": "run",
+          "callee": "server.Start",
+          "lineNumber": 99
+        },
+        {
+          "caller": "run",
+          "callee": "cfg.Server.Addr",
+          "lineNumber": 99
+        },
+        {
+          "caller": "run",
+          "callee": "errors.Is",
+          "lineNumber": 100
+        },
+        {
+          "caller": "run",
+          "callee": "ctx.Done",
+          "lineNumber": 108
+        },
+        {
+          "caller": "run",
+          "callee": "context.WithTimeout",
+          "lineNumber": 109
+        },
+        {
+          "caller": "run",
+          "callee": "context.Background",
+          "lineNumber": 109
+        },
+        {
+          "caller": "run",
+          "callee": "cancel",
+          "lineNumber": 110
+        },
+        {
+          "caller": "run",
+          "callee": "server.Shutdown",
+          "lineNumber": 111
+        },
+        {
+          "caller": "run",
+          "callee": "fmt.Errorf",
+          "lineNumber": 112
+        },
+        {
+          "caller": "run",
+          "callee": "logger.Info",
+          "lineNumber": 114
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "internal/api/server_test.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 114,
+      "nonEmptyLines": 93,
+      "functions": [
+        {
+          "name": "TestHealthzReturnsOK",
+          "startLine": 14,
+          "endLine": 27,
+          "params": [
+            "t"
+          ]
+        },
+        {
+          "name": "TestTransfersRejectsMissingFilters",
+          "startLine": 29,
+          "endLine": 39,
+          "params": [
+            "t"
+          ]
+        },
+        {
+          "name": "TestTransfersRejectsInvalidLimit",
+          "startLine": 41,
+          "endLine": 51,
+          "params": [
+            "t"
+          ]
+        },
+        {
+          "name": "TestTransfersReturnsRepoResults",
+          "startLine": 53,
+          "endLine": 69,
+          "params": [
+            "t"
+          ]
+        },
+        {
+          "name": "TestAddressSummaryReturnsRepoResult",
+          "startLine": 71,
+          "endLine": 91,
+          "params": [
+            "t"
+          ]
+        },
+        {
+          "name": "Find",
+          "startLine": 102,
+          "endLine": 107,
+          "params": [
+            "_",
+            "chainID",
+            "address",
+            "_",
+            "limit"
+          ]
+        },
+        {
+          "name": "AddressSummary",
+          "startLine": 109,
+          "endLine": 114,
+          "params": [
+            "_",
+            "chainID",
+            "address"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "fakeTransferReader",
+          "startLine": 93,
+          "endLine": 100,
+          "methods": [
+            "Find",
+            "AddressSummary"
+          ],
+          "properties": [
+            "transfers",
+            "summary",
+            "lastFindChainID",
+            "lastFindAddress",
+            "lastFindLimit"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TestHealthzReturnsOK",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "TestTransfersRejectsMissingFilters",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "TestTransfersRejectsInvalidLimit",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "TestTransfersReturnsRepoResults",
+          "line": 53,
+          "isDefault": false
+        },
+        {
+          "name": "TestAddressSummaryReturnsRepoResult",
+          "line": 71,
+          "isDefault": false
+        },
+        {
+          "name": "Find",
+          "line": 102,
+          "isDefault": false
+        },
+        {
+          "name": "AddressSummary",
+          "line": 109,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "TestHealthzReturnsOK",
+          "callee": "NewServer",
+          "lineNumber": 15
+        },
+        {
+          "caller": "TestHealthzReturnsOK",
+          "callee": "httptest.NewRequest",
+          "lineNumber": 17
+        },
+        {
+          "caller": "TestHealthzReturnsOK",
+          "callee": "httptest.NewRecorder",
+          "lineNumber": 18
+        },
+        {
+          "caller": "TestHealthzReturnsOK",
+          "callee": "server.ServeHTTP",
+          "lineNumber": 19
+        },
+        {
+          "caller": "TestHealthzReturnsOK",
+          "callee": "t.Fatalf",
+          "lineNumber": 22
+        },
+        {
+          "caller": "TestHealthzReturnsOK",
+          "callee": "rec.Body.String",
+          "lineNumber": 24
+        },
+        {
+          "caller": "TestHealthzReturnsOK",
+          "callee": "t.Fatalf",
+          "lineNumber": 25
+        },
+        {
+          "caller": "TestHealthzReturnsOK",
+          "callee": "rec.Body.String",
+          "lineNumber": 25
+        },
+        {
+          "caller": "TestTransfersRejectsMissingFilters",
+          "callee": "NewServer",
+          "lineNumber": 30
+        },
+        {
+          "caller": "TestTransfersRejectsMissingFilters",
+          "callee": "httptest.NewRequest",
+          "lineNumber": 32
+        },
+        {
+          "caller": "TestTransfersRejectsMissingFilters",
+          "callee": "httptest.NewRecorder",
+          "lineNumber": 33
+        },
+        {
+          "caller": "TestTransfersRejectsMissingFilters",
+          "callee": "server.ServeHTTP",
+          "lineNumber": 34
+        },
+        {
+          "caller": "TestTransfersRejectsMissingFilters",
+          "callee": "t.Fatalf",
+          "lineNumber": 37
+        },
+        {
+          "caller": "TestTransfersRejectsInvalidLimit",
+          "callee": "NewServer",
+          "lineNumber": 42
+        },
+        {
+          "caller": "TestTransfersRejectsInvalidLimit",
+          "callee": "httptest.NewRequest",
+          "lineNumber": 44
+        },
+        {
+          "caller": "TestTransfersRejectsInvalidLimit",
+          "callee": "httptest.NewRecorder",
+          "lineNumber": 45
+        },
+        {
+          "caller": "TestTransfersRejectsInvalidLimit",
+          "callee": "server.ServeHTTP",
+          "lineNumber": 46
+        },
+        {
+          "caller": "TestTransfersRejectsInvalidLimit",
+          "callee": "t.Fatalf",
+          "lineNumber": 49
+        },
+        {
+          "caller": "TestTransfersReturnsRepoResults",
+          "callee": "NewServer",
+          "lineNumber": 57
+        },
+        {
+          "caller": "TestTransfersReturnsRepoResults",
+          "callee": "httptest.NewRequest",
+          "lineNumber": 59
+        },
+        {
+          "caller": "TestTransfersReturnsRepoResults",
+          "callee": "httptest.NewRecorder",
+          "lineNumber": 60
+        },
+        {
+          "caller": "TestTransfersReturnsRepoResults",
+          "callee": "server.ServeHTTP",
+          "lineNumber": 61
+        },
+        {
+          "caller": "TestTransfersReturnsRepoResults",
+          "callee": "t.Fatalf",
+          "lineNumber": 64
+        },
+        {
+          "caller": "TestTransfersReturnsRepoResults",
+          "callee": "t.Fatalf",
+          "lineNumber": 67
+        },
+        {
+          "caller": "TestAddressSummaryReturnsRepoResult",
+          "callee": "NewServer",
+          "lineNumber": 75
+        },
+        {
+          "caller": "TestAddressSummaryReturnsRepoResult",
+          "callee": "httptest.NewRequest",
+          "lineNumber": 77
+        },
+        {
+          "caller": "TestAddressSummaryReturnsRepoResult",
+          "callee": "httptest.NewRecorder",
+          "lineNumber": 78
+        },
+        {
+          "caller": "TestAddressSummaryReturnsRepoResult",
+          "callee": "server.ServeHTTP",
+          "lineNumber": 79
+        },
+        {
+          "caller": "TestAddressSummaryReturnsRepoResult",
+          "callee": "t.Fatalf",
+          "lineNumber": 82
+        },
+        {
+          "caller": "TestAddressSummaryReturnsRepoResult",
+          "callee": "json.Unmarshal",
+          "lineNumber": 85
+        },
+        {
+          "caller": "TestAddressSummaryReturnsRepoResult",
+          "callee": "rec.Body.Bytes",
+          "lineNumber": 85
+        },
+        {
+          "caller": "TestAddressSummaryReturnsRepoResult",
+          "callee": "t.Fatalf",
+          "lineNumber": 86
+        },
+        {
+          "caller": "TestAddressSummaryReturnsRepoResult",
+          "callee": "t.Fatalf",
+          "lineNumber": 89
+        },
+        {
+          "caller": "AddressSummary",
+          "callee": "fmt.Errorf",
+          "lineNumber": 111
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 7,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "internal/api/server.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 92,
+      "nonEmptyLines": 83,
+      "functions": [
+        {
+          "name": "NewServer",
+          "startLine": 19,
+          "endLine": 73,
+          "params": []
+        },
+        {
+          "name": "defaultString",
+          "startLine": 75,
+          "endLine": 80,
+          "params": [
+            "value",
+            "fallback"
+          ]
+        },
+        {
+          "name": "isHexAddress",
+          "startLine": 82,
+          "endLine": 92,
+          "params": [
+            "value"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "transferReader",
+          "startLine": 14,
+          "endLine": 17,
+          "methods": [
+            "Find",
+            "AddressSummary"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "NewServer",
+          "line": 19,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "NewServer",
+          "callee": "echo.New",
+          "lineNumber": 20
+        },
+        {
+          "caller": "NewServer",
+          "callee": "e.GET",
+          "lineNumber": 24
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.JSON",
+          "lineNumber": 25
+        },
+        {
+          "caller": "NewServer",
+          "callee": "len",
+          "lineNumber": 27
+        },
+        {
+          "caller": "NewServer",
+          "callee": "e.GET",
+          "lineNumber": 29
+        },
+        {
+          "caller": "NewServer",
+          "callee": "strconv.ParseInt",
+          "lineNumber": 30
+        },
+        {
+          "caller": "NewServer",
+          "callee": "defaultString",
+          "lineNumber": 30
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.QueryParam",
+          "lineNumber": 30
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.JSON",
+          "lineNumber": 32
+        },
+        {
+          "caller": "NewServer",
+          "callee": "strconv.ParseInt",
+          "lineNumber": 34
+        },
+        {
+          "caller": "NewServer",
+          "callee": "defaultString",
+          "lineNumber": 34
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.QueryParam",
+          "lineNumber": 34
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.JSON",
+          "lineNumber": 36
+        },
+        {
+          "caller": "NewServer",
+          "callee": "strings.ToLower",
+          "lineNumber": 38
+        },
+        {
+          "caller": "NewServer",
+          "callee": "strings.TrimSpace",
+          "lineNumber": 38
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.QueryParam",
+          "lineNumber": 38
+        },
+        {
+          "caller": "NewServer",
+          "callee": "strings.ToLower",
+          "lineNumber": 39
+        },
+        {
+          "caller": "NewServer",
+          "callee": "strings.TrimSpace",
+          "lineNumber": 39
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.QueryParam",
+          "lineNumber": 39
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.JSON",
+          "lineNumber": 41
+        },
+        {
+          "caller": "NewServer",
+          "callee": "isHexAddress",
+          "lineNumber": 43
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.JSON",
+          "lineNumber": 44
+        },
+        {
+          "caller": "NewServer",
+          "callee": "isHexAddress",
+          "lineNumber": 46
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.JSON",
+          "lineNumber": 47
+        },
+        {
+          "caller": "NewServer",
+          "callee": "repo.Find",
+          "lineNumber": 49
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.Request().Context",
+          "lineNumber": 49
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.Request",
+          "lineNumber": 49
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.JSON",
+          "lineNumber": 51
+        },
+        {
+          "caller": "NewServer",
+          "callee": "err.Error",
+          "lineNumber": 51
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.JSON",
+          "lineNumber": 53
+        },
+        {
+          "caller": "NewServer",
+          "callee": "e.GET",
+          "lineNumber": 55
+        },
+        {
+          "caller": "NewServer",
+          "callee": "strconv.ParseInt",
+          "lineNumber": 56
+        },
+        {
+          "caller": "NewServer",
+          "callee": "defaultString",
+          "lineNumber": 56
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.QueryParam",
+          "lineNumber": 56
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.JSON",
+          "lineNumber": 58
+        },
+        {
+          "caller": "NewServer",
+          "callee": "strings.ToLower",
+          "lineNumber": 60
+        },
+        {
+          "caller": "NewServer",
+          "callee": "strings.TrimSpace",
+          "lineNumber": 60
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.Param",
+          "lineNumber": 60
+        },
+        {
+          "caller": "NewServer",
+          "callee": "isHexAddress",
+          "lineNumber": 61
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.JSON",
+          "lineNumber": 62
+        },
+        {
+          "caller": "NewServer",
+          "callee": "repo.AddressSummary",
+          "lineNumber": 64
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.Request().Context",
+          "lineNumber": 64
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.Request",
+          "lineNumber": 64
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.JSON",
+          "lineNumber": 66
+        },
+        {
+          "caller": "NewServer",
+          "callee": "err.Error",
+          "lineNumber": 66
+        },
+        {
+          "caller": "NewServer",
+          "callee": "c.JSON",
+          "lineNumber": 68
+        },
+        {
+          "caller": "defaultString",
+          "callee": "strings.TrimSpace",
+          "lineNumber": 76
+        },
+        {
+          "caller": "isHexAddress",
+          "callee": "len",
+          "lineNumber": 83
+        },
+        {
+          "caller": "isHexAddress",
+          "callee": "strings.HasPrefix",
+          "lineNumber": 83
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "internal/config/config_test.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 39,
+      "nonEmptyLines": 32,
+      "functions": [
+        {
+          "name": "TestLoadUsesDefaults",
+          "startLine": 5,
+          "endLine": 21,
+          "params": [
+            "t"
+          ]
+        },
+        {
+          "name": "TestLoadUsesEnvironmentOverrides",
+          "startLine": 23,
+          "endLine": 39,
+          "params": [
+            "t"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TestLoadUsesDefaults",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "TestLoadUsesEnvironmentOverrides",
+          "line": 23,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "TestLoadUsesDefaults",
+          "callee": "t.Setenv",
+          "lineNumber": 6
+        },
+        {
+          "caller": "TestLoadUsesDefaults",
+          "callee": "t.Setenv",
+          "lineNumber": 7
+        },
+        {
+          "caller": "TestLoadUsesDefaults",
+          "callee": "t.Setenv",
+          "lineNumber": 8
+        },
+        {
+          "caller": "TestLoadUsesDefaults",
+          "callee": "Load",
+          "lineNumber": 10
+        },
+        {
+          "caller": "TestLoadUsesDefaults",
+          "callee": "t.Fatalf",
+          "lineNumber": 13
+        },
+        {
+          "caller": "TestLoadUsesDefaults",
+          "callee": "t.Fatalf",
+          "lineNumber": 16
+        },
+        {
+          "caller": "TestLoadUsesDefaults",
+          "callee": "t.Fatalf",
+          "lineNumber": 19
+        },
+        {
+          "caller": "TestLoadUsesEnvironmentOverrides",
+          "callee": "t.Setenv",
+          "lineNumber": 24
+        },
+        {
+          "caller": "TestLoadUsesEnvironmentOverrides",
+          "callee": "t.Setenv",
+          "lineNumber": 25
+        },
+        {
+          "caller": "TestLoadUsesEnvironmentOverrides",
+          "callee": "t.Setenv",
+          "lineNumber": 26
+        },
+        {
+          "caller": "TestLoadUsesEnvironmentOverrides",
+          "callee": "Load",
+          "lineNumber": 28
+        },
+        {
+          "caller": "TestLoadUsesEnvironmentOverrides",
+          "callee": "t.Fatalf",
+          "lineNumber": 31
+        },
+        {
+          "caller": "TestLoadUsesEnvironmentOverrides",
+          "callee": "t.Fatalf",
+          "lineNumber": 34
+        },
+        {
+          "caller": "TestLoadUsesEnvironmentOverrides",
+          "callee": "t.Fatalf",
+          "lineNumber": 37
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "internal/config/config.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 170,
+      "nonEmptyLines": 154,
+      "functions": [
+        {
+          "name": "Addr",
+          "startLine": 22,
+          "endLine": 24,
+          "params": []
+        },
+        {
+          "name": "Load",
+          "startLine": 45,
+          "endLine": 67,
+          "params": []
+        },
+        {
+          "name": "env",
+          "startLine": 69,
+          "endLine": 75,
+          "params": [
+            "key",
+            "fallback"
+          ]
+        },
+        {
+          "name": "LoadDotEnv",
+          "startLine": 77,
+          "endLine": 106,
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "envInt64",
+          "startLine": 108,
+          "endLine": 118,
+          "params": [
+            "key",
+            "fallback"
+          ]
+        },
+        {
+          "name": "envUint64",
+          "startLine": 120,
+          "endLine": 130,
+          "params": [
+            "key",
+            "fallback"
+          ]
+        },
+        {
+          "name": "envBool",
+          "startLine": 132,
+          "endLine": 138,
+          "params": [
+            "key",
+            "fallback"
+          ]
+        },
+        {
+          "name": "envDuration",
+          "startLine": 140,
+          "endLine": 154,
+          "params": [
+            "key",
+            "fallback"
+          ]
+        },
+        {
+          "name": "envList",
+          "startLine": 156,
+          "endLine": 170,
+          "params": [
+            "key"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "Config",
+          "startLine": 11,
+          "endLine": 16,
+          "methods": [],
+          "properties": [
+            "Server",
+            "Mongo",
+            "Eth",
+            "Scanner"
+          ]
+        },
+        {
+          "name": "ServerConfig",
+          "startLine": 18,
+          "endLine": 20,
+          "methods": [
+            "Addr"
+          ],
+          "properties": [
+            "Port"
+          ]
+        },
+        {
+          "name": "MongoConfig",
+          "startLine": 26,
+          "endLine": 29,
+          "methods": [],
+          "properties": [
+            "URI",
+            "Database"
+          ]
+        },
+        {
+          "name": "EthConfig",
+          "startLine": 31,
+          "endLine": 38,
+          "methods": [],
+          "properties": [
+            "RPCURL",
+            "ChainID",
+            "Confirmations",
+            "DefaultStartBlock",
+            "BatchSize",
+            "PollInterval"
+          ]
+        },
+        {
+          "name": "ScannerConfig",
+          "startLine": 40,
+          "endLine": 43,
+          "methods": [],
+          "properties": [
+            "Enabled",
+            "TokenAddresses"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Config",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "ServerConfig",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "Addr",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "MongoConfig",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "EthConfig",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "ScannerConfig",
+          "line": 40,
+          "isDefault": false
+        },
+        {
+          "name": "Load",
+          "line": 45,
+          "isDefault": false
+        },
+        {
+          "name": "LoadDotEnv",
+          "line": 77,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Load",
+          "callee": "env",
+          "lineNumber": 48
+        },
+        {
+          "caller": "Load",
+          "callee": "env",
+          "lineNumber": 51
+        },
+        {
+          "caller": "Load",
+          "callee": "env",
+          "lineNumber": 52
+        },
+        {
+          "caller": "Load",
+          "callee": "env",
+          "lineNumber": 55
+        },
+        {
+          "caller": "Load",
+          "callee": "envInt64",
+          "lineNumber": 56
+        },
+        {
+          "caller": "Load",
+          "callee": "envUint64",
+          "lineNumber": 57
+        },
+        {
+          "caller": "Load",
+          "callee": "envUint64",
+          "lineNumber": 58
+        },
+        {
+          "caller": "Load",
+          "callee": "envUint64",
+          "lineNumber": 59
+        },
+        {
+          "caller": "Load",
+          "callee": "envDuration",
+          "lineNumber": 60
+        },
+        {
+          "caller": "Load",
+          "callee": "envBool",
+          "lineNumber": 63
+        },
+        {
+          "caller": "Load",
+          "callee": "envList",
+          "lineNumber": 64
+        },
+        {
+          "caller": "env",
+          "callee": "strings.TrimSpace",
+          "lineNumber": 70
+        },
+        {
+          "caller": "env",
+          "callee": "os.Getenv",
+          "lineNumber": 70
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "os.Open",
+          "lineNumber": 78
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "os.IsNotExist",
+          "lineNumber": 80
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "file.Close",
+          "lineNumber": 85
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "bufio.NewScanner",
+          "lineNumber": 87
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "scanner.Scan",
+          "lineNumber": 88
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "strings.TrimSpace",
+          "lineNumber": 89
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "scanner.Text",
+          "lineNumber": 89
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "strings.HasPrefix",
+          "lineNumber": 90
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "strings.Cut",
+          "lineNumber": 93
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "strings.TrimSpace",
+          "lineNumber": 97
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "strings.Trim",
+          "lineNumber": 98
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "strings.TrimSpace",
+          "lineNumber": 98
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "os.Getenv",
+          "lineNumber": 99
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "os.Setenv",
+          "lineNumber": 100
+        },
+        {
+          "caller": "LoadDotEnv",
+          "callee": "scanner.Err",
+          "lineNumber": 105
+        },
+        {
+          "caller": "envInt64",
+          "callee": "env",
+          "lineNumber": 109
+        },
+        {
+          "caller": "envInt64",
+          "callee": "strconv.ParseInt",
+          "lineNumber": 113
+        },
+        {
+          "caller": "envUint64",
+          "callee": "env",
+          "lineNumber": 121
+        },
+        {
+          "caller": "envUint64",
+          "callee": "strconv.ParseUint",
+          "lineNumber": 125
+        },
+        {
+          "caller": "envBool",
+          "callee": "strings.ToLower",
+          "lineNumber": 133
+        },
+        {
+          "caller": "envBool",
+          "callee": "env",
+          "lineNumber": 133
+        },
+        {
+          "caller": "envDuration",
+          "callee": "env",
+          "lineNumber": 141
+        },
+        {
+          "caller": "envDuration",
+          "callee": "time.ParseDuration",
+          "lineNumber": 145
+        },
+        {
+          "caller": "envDuration",
+          "callee": "strconv.ParseInt",
+          "lineNumber": 149
+        },
+        {
+          "caller": "envDuration",
+          "callee": "time.Duration",
+          "lineNumber": 153
+        },
+        {
+          "caller": "envList",
+          "callee": "env",
+          "lineNumber": 157
+        },
+        {
+          "caller": "envList",
+          "callee": "strings.Split",
+          "lineNumber": 161
+        },
+        {
+          "caller": "envList",
+          "callee": "make",
+          "lineNumber": 162
+        },
+        {
+          "caller": "envList",
+          "callee": "len",
+          "lineNumber": 162
+        },
+        {
+          "caller": "envList",
+          "callee": "strings.ToLower",
+          "lineNumber": 164
+        },
+        {
+          "caller": "envList",
+          "callee": "strings.TrimSpace",
+          "lineNumber": 164
+        },
+        {
+          "caller": "envList",
+          "callee": "append",
+          "lineNumber": 166
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 8,
+        "functionCount": 9,
+        "classCount": 5
+      }
+    },
+    {
+      "path": "internal/eth/client.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 149,
+      "nonEmptyLines": 135,
+      "functions": [
+        {
+          "name": "NewClient",
+          "startLine": 41,
+          "endLine": 46,
+          "params": [
+            "url"
+          ]
+        },
+        {
+          "name": "BlockNumber",
+          "startLine": 49,
+          "endLine": 55,
+          "params": [
+            "ctx"
+          ]
+        },
+        {
+          "name": "BlockByNumber",
+          "startLine": 58,
+          "endLine": 64,
+          "params": [
+            "ctx",
+            "number"
+          ]
+        },
+        {
+          "name": "FilterTransferLogs",
+          "startLine": 67,
+          "endLine": 79,
+          "params": [
+            "ctx",
+            "fromBlock",
+            "toBlock",
+            "tokenAddress"
+          ]
+        },
+        {
+          "name": "call",
+          "startLine": 81,
+          "endLine": 131,
+          "params": [
+            "ctx",
+            "method",
+            "params",
+            "result"
+          ]
+        },
+        {
+          "name": "Uint64Hex",
+          "startLine": 134,
+          "endLine": 136,
+          "params": [
+            "n"
+          ]
+        },
+        {
+          "name": "ParseHexUint64",
+          "startLine": 139,
+          "endLine": 149,
+          "params": [
+            "value"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "Client",
+          "startLine": 15,
+          "endLine": 18,
+          "methods": [
+            "BlockNumber",
+            "BlockByNumber",
+            "FilterTransferLogs",
+            "call"
+          ],
+          "properties": [
+            "url",
+            "httpClient"
+          ]
+        },
+        {
+          "name": "Log",
+          "startLine": 20,
+          "endLine": 30,
+          "methods": [],
+          "properties": [
+            "Address",
+            "Topics",
+            "Data",
+            "BlockNumber",
+            "BlockHash",
+            "TransactionHash",
+            "TransactionIndex",
+            "LogIndex",
+            "Removed"
+          ]
+        },
+        {
+          "name": "Block",
+          "startLine": 33,
+          "endLine": 38,
+          "methods": [],
+          "properties": [
+            "Number",
+            "Hash",
+            "ParentHash",
+            "Timestamp"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Client",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "Log",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "Block",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "NewClient",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "BlockNumber",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "BlockByNumber",
+          "line": 58,
+          "isDefault": false
+        },
+        {
+          "name": "FilterTransferLogs",
+          "line": 67,
+          "isDefault": false
+        },
+        {
+          "name": "Uint64Hex",
+          "line": 134,
+          "isDefault": false
+        },
+        {
+          "name": "ParseHexUint64",
+          "line": 139,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "NewClient",
+          "callee": "strings.TrimSpace",
+          "lineNumber": 43
+        },
+        {
+          "caller": "BlockNumber",
+          "callee": "c.call",
+          "lineNumber": 51
+        },
+        {
+          "caller": "BlockNumber",
+          "callee": "ParseHexUint64",
+          "lineNumber": 54
+        },
+        {
+          "caller": "BlockByNumber",
+          "callee": "c.call",
+          "lineNumber": 60
+        },
+        {
+          "caller": "BlockByNumber",
+          "callee": "Uint64Hex",
+          "lineNumber": 60
+        },
+        {
+          "caller": "FilterTransferLogs",
+          "callee": "Uint64Hex",
+          "lineNumber": 69
+        },
+        {
+          "caller": "FilterTransferLogs",
+          "callee": "Uint64Hex",
+          "lineNumber": 70
+        },
+        {
+          "caller": "FilterTransferLogs",
+          "callee": "strings.ToLower",
+          "lineNumber": 71
+        },
+        {
+          "caller": "FilterTransferLogs",
+          "callee": "c.call",
+          "lineNumber": 75
+        },
+        {
+          "caller": "call",
+          "callee": "fmt.Errorf",
+          "lineNumber": 83
+        },
+        {
+          "caller": "call",
+          "callee": "json.Marshal",
+          "lineNumber": 85
+        },
+        {
+          "caller": "call",
+          "callee": "fmt.Errorf",
+          "lineNumber": 92
+        },
+        {
+          "caller": "call",
+          "callee": "http.NewRequestWithContext",
+          "lineNumber": 94
+        },
+        {
+          "caller": "call",
+          "callee": "bytes.NewReader",
+          "lineNumber": 94
+        },
+        {
+          "caller": "call",
+          "callee": "fmt.Errorf",
+          "lineNumber": 96
+        },
+        {
+          "caller": "call",
+          "callee": "req.Header.Set",
+          "lineNumber": 98
+        },
+        {
+          "caller": "call",
+          "callee": "c.httpClient.Do",
+          "lineNumber": 100
+        },
+        {
+          "caller": "call",
+          "callee": "fmt.Errorf",
+          "lineNumber": 102
+        },
+        {
+          "caller": "call",
+          "callee": "resp.Body.Close",
+          "lineNumber": 104
+        },
+        {
+          "caller": "call",
+          "callee": "io.ReadAll",
+          "lineNumber": 106
+        },
+        {
+          "caller": "call",
+          "callee": "fmt.Errorf",
+          "lineNumber": 108
+        },
+        {
+          "caller": "call",
+          "callee": "fmt.Errorf",
+          "lineNumber": 111
+        },
+        {
+          "caller": "call",
+          "callee": "string",
+          "lineNumber": 111
+        },
+        {
+          "caller": "call",
+          "callee": "json.Unmarshal",
+          "lineNumber": 121
+        },
+        {
+          "caller": "call",
+          "callee": "fmt.Errorf",
+          "lineNumber": 122
+        },
+        {
+          "caller": "call",
+          "callee": "fmt.Errorf",
+          "lineNumber": 125
+        },
+        {
+          "caller": "call",
+          "callee": "json.Unmarshal",
+          "lineNumber": 127
+        },
+        {
+          "caller": "call",
+          "callee": "fmt.Errorf",
+          "lineNumber": 128
+        },
+        {
+          "caller": "Uint64Hex",
+          "callee": "strconv.FormatUint",
+          "lineNumber": 135
+        },
+        {
+          "caller": "ParseHexUint64",
+          "callee": "strings.TrimPrefix",
+          "lineNumber": 140
+        },
+        {
+          "caller": "ParseHexUint64",
+          "callee": "strings.ToLower",
+          "lineNumber": 140
+        },
+        {
+          "caller": "ParseHexUint64",
+          "callee": "strings.TrimSpace",
+          "lineNumber": 140
+        },
+        {
+          "caller": "ParseHexUint64",
+          "callee": "strconv.ParseUint",
+          "lineNumber": 144
+        },
+        {
+          "caller": "ParseHexUint64",
+          "callee": "fmt.Errorf",
+          "lineNumber": 146
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 9,
+        "functionCount": 7,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "internal/eth/logs.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 3,
+      "nonEmptyLines": 2,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "internal/model/block.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 15,
+      "nonEmptyLines": 13,
+      "classes": [
+        {
+          "name": "Block",
+          "startLine": 6,
+          "endLine": 15,
+          "methods": [],
+          "properties": [
+            "ChainID",
+            "BlockNumber",
+            "BlockHash",
+            "ParentHash",
+            "BlockTime",
+            "Status",
+            "CreatedAt",
+            "UpdatedAt"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Block",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "internal/model/sync_state.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 16,
+      "nonEmptyLines": 14,
+      "classes": [
+        {
+          "name": "SyncState",
+          "startLine": 5,
+          "endLine": 16,
+          "methods": [],
+          "properties": [
+            "ChainID",
+            "ScannerName",
+            "TokenAddress",
+            "FromBlock",
+            "LatestScannedBlock",
+            "LatestConfirmedBlock",
+            "Confirmations",
+            "Status",
+            "LastError",
+            "UpdatedAt"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SyncState",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "internal/model/token_transfer.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 33,
+      "nonEmptyLines": 30,
+      "classes": [
+        {
+          "name": "TokenTransfer",
+          "startLine": 5,
+          "endLine": 21,
+          "methods": [],
+          "properties": [
+            "ChainID",
+            "BlockNumber",
+            "BlockHash",
+            "TxHash",
+            "LogIndex",
+            "TxIndex",
+            "TokenAddress",
+            "FromAddress",
+            "ToAddress",
+            "AmountRaw",
+            "Confirmed",
+            "Removed",
+            "EventTime",
+            "CreatedAt",
+            "UpdatedAt"
+          ]
+        },
+        {
+          "name": "AddressSummary",
+          "startLine": 24,
+          "endLine": 33,
+          "methods": [],
+          "properties": [
+            "ChainID",
+            "Address",
+            "SentCount",
+            "ReceivedCount",
+            "TotalCount",
+            "LatestBlock",
+            "TokenCount",
+            "Tokens"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TokenTransfer",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "AddressSummary",
+          "line": 24,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "internal/parser/erc20_test.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 47,
+      "nonEmptyLines": 42,
+      "functions": [
+        {
+          "name": "TestParseERC20Transfer",
+          "startLine": 9,
+          "endLine": 37,
+          "params": [
+            "t"
+          ]
+        },
+        {
+          "name": "TestParseERC20TransferRejectsWrongTopic",
+          "startLine": 39,
+          "endLine": 47,
+          "params": [
+            "t"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TestParseERC20Transfer",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "TestParseERC20TransferRejectsWrongTopic",
+          "line": 39,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "TestParseERC20Transfer",
+          "callee": "ParseERC20Transfer",
+          "lineNumber": 21
+        },
+        {
+          "caller": "TestParseERC20Transfer",
+          "callee": "t.Fatalf",
+          "lineNumber": 23
+        },
+        {
+          "caller": "TestParseERC20Transfer",
+          "callee": "t.Fatalf",
+          "lineNumber": 26
+        },
+        {
+          "caller": "TestParseERC20Transfer",
+          "callee": "t.Fatalf",
+          "lineNumber": 29
+        },
+        {
+          "caller": "TestParseERC20Transfer",
+          "callee": "t.Fatalf",
+          "lineNumber": 32
+        },
+        {
+          "caller": "TestParseERC20Transfer",
+          "callee": "t.Fatalf",
+          "lineNumber": 35
+        },
+        {
+          "caller": "TestParseERC20TransferRejectsWrongTopic",
+          "callee": "ParseERC20Transfer",
+          "lineNumber": 40
+        },
+        {
+          "caller": "TestParseERC20TransferRejectsWrongTopic",
+          "callee": "t.Fatal",
+          "lineNumber": 45
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "internal/parser/erc20.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 66,
+      "nonEmptyLines": 62,
+      "functions": [
+        {
+          "name": "ParseERC20Transfer",
+          "startLine": 13,
+          "endLine": 58,
+          "params": [
+            "chainID",
+            "log"
+          ]
+        },
+        {
+          "name": "topicAddress",
+          "startLine": 60,
+          "endLine": 66,
+          "params": [
+            "topic"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ParseERC20Transfer",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "len",
+          "lineNumber": 14
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "fmt.Errorf",
+          "lineNumber": 15
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "len",
+          "lineNumber": 15
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "strings.EqualFold",
+          "lineNumber": 17
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "fmt.Errorf",
+          "lineNumber": 18
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "strings.TrimPrefix",
+          "lineNumber": 20
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "strings.ToLower",
+          "lineNumber": 20
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "len",
+          "lineNumber": 21
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "fmt.Errorf",
+          "lineNumber": 22
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "len",
+          "lineNumber": 22
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "new",
+          "lineNumber": 24
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "amount.SetString",
+          "lineNumber": 25
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "fmt.Errorf",
+          "lineNumber": 26
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "eth.ParseHexUint64",
+          "lineNumber": 28
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "eth.ParseHexUint64",
+          "lineNumber": 32
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "eth.ParseHexUint64",
+          "lineNumber": 36
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "time.Now().UTC",
+          "lineNumber": 40
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "time.Now",
+          "lineNumber": 40
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "strings.ToLower",
+          "lineNumber": 44
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "strings.ToLower",
+          "lineNumber": 45
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "strings.ToLower",
+          "lineNumber": 48
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "topicAddress",
+          "lineNumber": 49
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "topicAddress",
+          "lineNumber": 50
+        },
+        {
+          "caller": "ParseERC20Transfer",
+          "callee": "amount.String",
+          "lineNumber": 51
+        },
+        {
+          "caller": "topicAddress",
+          "callee": "strings.TrimPrefix",
+          "lineNumber": 61
+        },
+        {
+          "caller": "topicAddress",
+          "callee": "strings.ToLower",
+          "lineNumber": 61
+        },
+        {
+          "caller": "topicAddress",
+          "callee": "len",
+          "lineNumber": 62
+        },
+        {
+          "caller": "topicAddress",
+          "callee": "len",
+          "lineNumber": 65
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "internal/scanner/scanner_test.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 141,
+      "nonEmptyLines": 122,
+      "functions": [
+        {
+          "name": "TestScanOnceReturnsRPCErrorWithoutUpdatingProgress",
+          "startLine": 15,
+          "endLine": 36,
+          "params": [
+            "t"
+          ]
+        },
+        {
+          "name": "TestScanOnceWritesBlocksBeforeProgress",
+          "startLine": 38,
+          "endLine": 62,
+          "params": [
+            "t"
+          ]
+        },
+        {
+          "name": "testConfig",
+          "startLine": 64,
+          "endLine": 74,
+          "params": []
+        },
+        {
+          "name": "testLogger",
+          "startLine": 76,
+          "endLine": 78,
+          "params": []
+        },
+        {
+          "name": "BlockNumber",
+          "startLine": 86,
+          "endLine": 88,
+          "params": []
+        },
+        {
+          "name": "BlockByNumber",
+          "startLine": 90,
+          "endLine": 96,
+          "params": [
+            "_",
+            "number"
+          ]
+        },
+        {
+          "name": "FilterTransferLogs",
+          "startLine": 98,
+          "endLine": 103,
+          "params": []
+        },
+        {
+          "name": "UpsertMany",
+          "startLine": 109,
+          "endLine": 112,
+          "params": []
+        },
+        {
+          "name": "GetOrCreate",
+          "startLine": 121,
+          "endLine": 123,
+          "params": []
+        },
+        {
+          "name": "UpdateProgress",
+          "startLine": 125,
+          "endLine": 130,
+          "params": [
+            "_",
+            "_",
+            "scannedBlock",
+            "confirmedBlock"
+          ]
+        },
+        {
+          "name": "UpsertMany",
+          "startLine": 137,
+          "endLine": 141,
+          "params": [
+            "_",
+            "blocks"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "fakeEthReader",
+          "startLine": 80,
+          "endLine": 84,
+          "methods": [
+            "BlockNumber",
+            "BlockByNumber",
+            "FilterTransferLogs"
+          ],
+          "properties": [
+            "latest",
+            "filterErr",
+            "blocks"
+          ]
+        },
+        {
+          "name": "fakeTransferWriter",
+          "startLine": 105,
+          "endLine": 107,
+          "methods": [
+            "UpsertMany"
+          ],
+          "properties": [
+            "calls"
+          ]
+        },
+        {
+          "name": "fakeSyncStateStore",
+          "startLine": 114,
+          "endLine": 119,
+          "methods": [
+            "GetOrCreate",
+            "UpdateProgress"
+          ],
+          "properties": [
+            "state",
+            "updateCalls",
+            "scannedBlock",
+            "confirmedBlock"
+          ]
+        },
+        {
+          "name": "fakeBlockWriter",
+          "startLine": 132,
+          "endLine": 135,
+          "methods": [
+            "UpsertMany"
+          ],
+          "properties": [
+            "calls",
+            "blocks"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TestScanOnceReturnsRPCErrorWithoutUpdatingProgress",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "TestScanOnceWritesBlocksBeforeProgress",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "BlockNumber",
+          "line": 86,
+          "isDefault": false
+        },
+        {
+          "name": "BlockByNumber",
+          "line": 90,
+          "isDefault": false
+        },
+        {
+          "name": "FilterTransferLogs",
+          "line": 98,
+          "isDefault": false
+        },
+        {
+          "name": "UpsertMany",
+          "line": 109,
+          "isDefault": false
+        },
+        {
+          "name": "GetOrCreate",
+          "line": 121,
+          "isDefault": false
+        },
+        {
+          "name": "UpdateProgress",
+          "line": 125,
+          "isDefault": false
+        },
+        {
+          "name": "UpsertMany",
+          "line": 137,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "TestScanOnceReturnsRPCErrorWithoutUpdatingProgress",
+          "callee": "testConfig",
+          "lineNumber": 16
+        },
+        {
+          "caller": "TestScanOnceReturnsRPCErrorWithoutUpdatingProgress",
+          "callee": "fmt.Errorf",
+          "lineNumber": 17
+        },
+        {
+          "caller": "TestScanOnceReturnsRPCErrorWithoutUpdatingProgress",
+          "callee": "testLogger",
+          "lineNumber": 21
+        },
+        {
+          "caller": "TestScanOnceReturnsRPCErrorWithoutUpdatingProgress",
+          "callee": "scanner.ScanOnce",
+          "lineNumber": 23
+        },
+        {
+          "caller": "TestScanOnceReturnsRPCErrorWithoutUpdatingProgress",
+          "callee": "context.Background",
+          "lineNumber": 23
+        },
+        {
+          "caller": "TestScanOnceReturnsRPCErrorWithoutUpdatingProgress",
+          "callee": "t.Fatal",
+          "lineNumber": 25
+        },
+        {
+          "caller": "TestScanOnceReturnsRPCErrorWithoutUpdatingProgress",
+          "callee": "t.Fatalf",
+          "lineNumber": 28
+        },
+        {
+          "caller": "TestScanOnceReturnsRPCErrorWithoutUpdatingProgress",
+          "callee": "t.Fatalf",
+          "lineNumber": 31
+        },
+        {
+          "caller": "TestScanOnceReturnsRPCErrorWithoutUpdatingProgress",
+          "callee": "t.Fatalf",
+          "lineNumber": 34
+        },
+        {
+          "caller": "TestScanOnceWritesBlocksBeforeProgress",
+          "callee": "testConfig",
+          "lineNumber": 39
+        },
+        {
+          "caller": "TestScanOnceWritesBlocksBeforeProgress",
+          "callee": "testLogger",
+          "lineNumber": 51
+        },
+        {
+          "caller": "TestScanOnceWritesBlocksBeforeProgress",
+          "callee": "scanner.ScanOnce",
+          "lineNumber": 53
+        },
+        {
+          "caller": "TestScanOnceWritesBlocksBeforeProgress",
+          "callee": "context.Background",
+          "lineNumber": 53
+        },
+        {
+          "caller": "TestScanOnceWritesBlocksBeforeProgress",
+          "callee": "t.Fatalf",
+          "lineNumber": 54
+        },
+        {
+          "caller": "TestScanOnceWritesBlocksBeforeProgress",
+          "callee": "len",
+          "lineNumber": 56
+        },
+        {
+          "caller": "TestScanOnceWritesBlocksBeforeProgress",
+          "callee": "t.Fatalf",
+          "lineNumber": 57
+        },
+        {
+          "caller": "TestScanOnceWritesBlocksBeforeProgress",
+          "callee": "len",
+          "lineNumber": 57
+        },
+        {
+          "caller": "TestScanOnceWritesBlocksBeforeProgress",
+          "callee": "t.Fatalf",
+          "lineNumber": 60
+        },
+        {
+          "caller": "testLogger",
+          "callee": "slog.New",
+          "lineNumber": 77
+        },
+        {
+          "caller": "testLogger",
+          "callee": "slog.NewTextHandler",
+          "lineNumber": 77
+        },
+        {
+          "caller": "BlockByNumber",
+          "callee": "fmt.Errorf",
+          "lineNumber": 93
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "append",
+          "lineNumber": 139
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 9,
+        "functionCount": 11,
+        "classCount": 4
+      }
+    },
+    {
+      "path": "internal/scanner/scanner.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 161,
+      "nonEmptyLines": 146,
+      "functions": [
+        {
+          "name": "New",
+          "startLine": 47,
+          "endLine": 49,
+          "params": [
+            "cfg",
+            "ethClient",
+            "transfers",
+            "states",
+            "blocks",
+            "logger"
+          ]
+        },
+        {
+          "name": "Run",
+          "startLine": 51,
+          "endLine": 68,
+          "params": [
+            "ctx"
+          ]
+        },
+        {
+          "name": "ScanOnce",
+          "startLine": 70,
+          "endLine": 85,
+          "params": [
+            "ctx"
+          ]
+        },
+        {
+          "name": "scanToken",
+          "startLine": 87,
+          "endLine": 128,
+          "params": [
+            "ctx",
+            "token",
+            "safeBlock"
+          ]
+        },
+        {
+          "name": "fetchBlocks",
+          "startLine": 130,
+          "endLine": 161,
+          "params": [
+            "ctx",
+            "from",
+            "to"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "ethReader",
+          "startLine": 19,
+          "endLine": 23,
+          "methods": [
+            "BlockNumber",
+            "BlockByNumber",
+            "FilterTransferLogs"
+          ],
+          "properties": []
+        },
+        {
+          "name": "transferWriter",
+          "startLine": 25,
+          "endLine": 27,
+          "methods": [
+            "UpsertMany"
+          ],
+          "properties": []
+        },
+        {
+          "name": "syncStateStore",
+          "startLine": 29,
+          "endLine": 32,
+          "methods": [
+            "GetOrCreate",
+            "UpdateProgress"
+          ],
+          "properties": []
+        },
+        {
+          "name": "blockWriter",
+          "startLine": 34,
+          "endLine": 36,
+          "methods": [
+            "UpsertMany"
+          ],
+          "properties": []
+        },
+        {
+          "name": "Scanner",
+          "startLine": 38,
+          "endLine": 45,
+          "methods": [
+            "Run",
+            "ScanOnce",
+            "scanToken",
+            "fetchBlocks"
+          ],
+          "properties": [
+            "cfg",
+            "ethClient",
+            "transfers",
+            "states",
+            "blocks",
+            "logger"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Scanner",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "New",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "Run",
+          "line": 51,
+          "isDefault": false
+        },
+        {
+          "name": "ScanOnce",
+          "line": 70,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Run",
+          "callee": "len",
+          "lineNumber": 52
+        },
+        {
+          "caller": "Run",
+          "callee": "fmt.Errorf",
+          "lineNumber": 53
+        },
+        {
+          "caller": "Run",
+          "callee": "time.NewTicker",
+          "lineNumber": 55
+        },
+        {
+          "caller": "Run",
+          "callee": "ticker.Stop",
+          "lineNumber": 56
+        },
+        {
+          "caller": "Run",
+          "callee": "s.ScanOnce",
+          "lineNumber": 59
+        },
+        {
+          "caller": "Run",
+          "callee": "ctx.Done",
+          "lineNumber": 63
+        },
+        {
+          "caller": "Run",
+          "callee": "ctx.Err",
+          "lineNumber": 64
+        },
+        {
+          "caller": "ScanOnce",
+          "callee": "s.ethClient.BlockNumber",
+          "lineNumber": 71
+        },
+        {
+          "caller": "ScanOnce",
+          "callee": "fmt.Errorf",
+          "lineNumber": 73
+        },
+        {
+          "caller": "ScanOnce",
+          "callee": "s.scanToken",
+          "lineNumber": 80
+        },
+        {
+          "caller": "scanToken",
+          "callee": "s.states.GetOrCreate",
+          "lineNumber": 88
+        },
+        {
+          "caller": "scanToken",
+          "callee": "s.ethClient.FilterTransferLogs",
+          "lineNumber": 101
+        },
+        {
+          "caller": "scanToken",
+          "callee": "fmt.Errorf",
+          "lineNumber": 103
+        },
+        {
+          "caller": "scanToken",
+          "callee": "make",
+          "lineNumber": 105
+        },
+        {
+          "caller": "scanToken",
+          "callee": "len",
+          "lineNumber": 105
+        },
+        {
+          "caller": "scanToken",
+          "callee": "parser.ParseERC20Transfer",
+          "lineNumber": 107
+        },
+        {
+          "caller": "scanToken",
+          "callee": "fmt.Errorf",
+          "lineNumber": 109
+        },
+        {
+          "caller": "scanToken",
+          "callee": "append",
+          "lineNumber": 111
+        },
+        {
+          "caller": "scanToken",
+          "callee": "s.transfers.UpsertMany",
+          "lineNumber": 113
+        },
+        {
+          "caller": "scanToken",
+          "callee": "s.fetchBlocks",
+          "lineNumber": 116
+        },
+        {
+          "caller": "scanToken",
+          "callee": "s.blocks.UpsertMany",
+          "lineNumber": 120
+        },
+        {
+          "caller": "scanToken",
+          "callee": "s.states.UpdateProgress",
+          "lineNumber": 123
+        },
+        {
+          "caller": "scanToken",
+          "callee": "s.logger.Info",
+          "lineNumber": 126
+        },
+        {
+          "caller": "scanToken",
+          "callee": "len",
+          "lineNumber": 126
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "make",
+          "lineNumber": 131
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "s.ethClient.BlockByNumber",
+          "lineNumber": 133
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "fmt.Errorf",
+          "lineNumber": 135
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "eth.ParseHexUint64",
+          "lineNumber": 137
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "fmt.Errorf",
+          "lineNumber": 139
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "fmt.Errorf",
+          "lineNumber": 142
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "eth.ParseHexUint64",
+          "lineNumber": 144
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "fmt.Errorf",
+          "lineNumber": 146
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "time.Now().UTC",
+          "lineNumber": 148
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "time.Now",
+          "lineNumber": 148
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "append",
+          "lineNumber": 149
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "strings.ToLower",
+          "lineNumber": 152
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "strings.ToLower",
+          "lineNumber": 153
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "time.Unix(int64(timestamp), 0).UTC",
+          "lineNumber": 154
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "time.Unix",
+          "lineNumber": 154
+        },
+        {
+          "caller": "fetchBlocks",
+          "callee": "int64",
+          "lineNumber": 154
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 5,
+        "classCount": 5
+      }
+    },
+    {
+      "path": "internal/storage/block_repo.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 62,
+      "nonEmptyLines": 55,
+      "functions": [
+        {
+          "name": "NewBlockRepo",
+          "startLine": 20,
+          "endLine": 22,
+          "params": [
+            "db"
+          ]
+        },
+        {
+          "name": "EnsureIndexes",
+          "startLine": 25,
+          "endLine": 34,
+          "params": [
+            "ctx"
+          ]
+        },
+        {
+          "name": "UpsertMany",
+          "startLine": 37,
+          "endLine": 62,
+          "params": [
+            "ctx",
+            "blocks"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "BlockRepo",
+          "startLine": 15,
+          "endLine": 17,
+          "methods": [
+            "EnsureIndexes",
+            "UpsertMany"
+          ],
+          "properties": [
+            "coll"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "BlockRepo",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "NewBlockRepo",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "EnsureIndexes",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "UpsertMany",
+          "line": 37,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "NewBlockRepo",
+          "callee": "db.Collection",
+          "lineNumber": 21
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "r.coll.Indexes().CreateMany",
+          "lineNumber": 26
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "r.coll.Indexes",
+          "lineNumber": 26
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "options.Index().SetUnique",
+          "lineNumber": 27
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "options.Index",
+          "lineNumber": 27
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "fmt.Errorf",
+          "lineNumber": 31
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "len",
+          "lineNumber": 38
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "make",
+          "lineNumber": 41
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "len",
+          "lineNumber": 41
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "time.Now().UTC",
+          "lineNumber": 43
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "time.Now",
+          "lineNumber": 43
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "append",
+          "lineNumber": 53
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "mongo.NewUpdateOneModel().\n\t\t\tSetFilter(bson.M{\"chain_id\": block.ChainID, \"block_number\": block.BlockNumber}).\n\t\t\tSetUpdate(bson.M{\"$set\": set, \"$setOnInsert\": bson.M{\"created_at\": block.CreatedAt}}).\n\t\t\tSetUpsert",
+          "lineNumber": 53
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "mongo.NewUpdateOneModel().\n\t\t\tSetFilter(bson.M{\"chain_id\": block.ChainID, \"block_number\": block.BlockNumber}).\n\t\t\tSetUpdate",
+          "lineNumber": 53
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "mongo.NewUpdateOneModel().\n\t\t\tSetFilter",
+          "lineNumber": 53
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "mongo.NewUpdateOneModel",
+          "lineNumber": 53
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "r.coll.BulkWrite",
+          "lineNumber": 58
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "fmt.Errorf",
+          "lineNumber": 59
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "internal/storage/mongo.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 21,
+      "nonEmptyLines": 16,
+      "functions": [
+        {
+          "name": "Connect",
+          "startLine": 11,
+          "endLine": 13,
+          "params": [
+            "_",
+            "uri"
+          ]
+        },
+        {
+          "name": "Ping",
+          "startLine": 15,
+          "endLine": 17,
+          "params": [
+            "ctx",
+            "client"
+          ]
+        },
+        {
+          "name": "Disconnect",
+          "startLine": 19,
+          "endLine": 21,
+          "params": [
+            "ctx",
+            "client"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "Connect",
+          "line": 11,
+          "isDefault": false
+        },
+        {
+          "name": "Ping",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "Disconnect",
+          "line": 19,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "Connect",
+          "callee": "mongo.Connect",
+          "lineNumber": 12
+        },
+        {
+          "caller": "Connect",
+          "callee": "options.Client().ApplyURI",
+          "lineNumber": 12
+        },
+        {
+          "caller": "Connect",
+          "callee": "options.Client",
+          "lineNumber": 12
+        },
+        {
+          "caller": "Ping",
+          "callee": "client.Ping",
+          "lineNumber": 16
+        },
+        {
+          "caller": "Ping",
+          "callee": "readpref.Primary",
+          "lineNumber": 16
+        },
+        {
+          "caller": "Disconnect",
+          "callee": "client.Disconnect",
+          "lineNumber": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "internal/storage/sync_state_repo_test.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 14,
+      "functions": [
+        {
+          "name": "TestSyncStateUpdateProgressRejectsBackwardMove",
+          "startLine": 10,
+          "endLine": 18,
+          "params": [
+            "t"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TestSyncStateUpdateProgressRejectsBackwardMove",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "TestSyncStateUpdateProgressRejectsBackwardMove",
+          "callee": "repo.UpdateProgress",
+          "lineNumber": 14
+        },
+        {
+          "caller": "TestSyncStateUpdateProgressRejectsBackwardMove",
+          "callee": "context.Background",
+          "lineNumber": 14
+        },
+        {
+          "caller": "TestSyncStateUpdateProgressRejectsBackwardMove",
+          "callee": "t.Fatal",
+          "lineNumber": 16
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "internal/storage/sync_state_repo.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 77,
+      "nonEmptyLines": 69,
+      "functions": [
+        {
+          "name": "NewSyncStateRepo",
+          "startLine": 20,
+          "endLine": 22,
+          "params": [
+            "db"
+          ]
+        },
+        {
+          "name": "EnsureIndexes",
+          "startLine": 24,
+          "endLine": 32,
+          "params": [
+            "ctx"
+          ]
+        },
+        {
+          "name": "GetOrCreate",
+          "startLine": 34,
+          "endLine": 59,
+          "params": [
+            "ctx",
+            "chainID",
+            "scannerName",
+            "tokenAddress",
+            "fromBlock",
+            "confirmations"
+          ]
+        },
+        {
+          "name": "UpdateProgress",
+          "startLine": 61,
+          "endLine": 77,
+          "params": [
+            "ctx",
+            "state",
+            "scannedBlock",
+            "confirmedBlock"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "SyncStateRepo",
+          "startLine": 16,
+          "endLine": 18,
+          "methods": [
+            "EnsureIndexes",
+            "GetOrCreate",
+            "UpdateProgress"
+          ],
+          "properties": [
+            "coll"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SyncStateRepo",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "NewSyncStateRepo",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "EnsureIndexes",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "GetOrCreate",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "UpdateProgress",
+          "line": 61,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "NewSyncStateRepo",
+          "callee": "db.Collection",
+          "lineNumber": 21
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "r.coll.Indexes().CreateMany",
+          "lineNumber": 25
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "r.coll.Indexes",
+          "lineNumber": 25
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "options.Index().SetUnique",
+          "lineNumber": 26
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "options.Index",
+          "lineNumber": 26
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "fmt.Errorf",
+          "lineNumber": 29
+        },
+        {
+          "caller": "GetOrCreate",
+          "callee": "r.coll.FindOne(ctx, filter).Decode",
+          "lineNumber": 37
+        },
+        {
+          "caller": "GetOrCreate",
+          "callee": "r.coll.FindOne",
+          "lineNumber": 37
+        },
+        {
+          "caller": "GetOrCreate",
+          "callee": "errors.Is",
+          "lineNumber": 41
+        },
+        {
+          "caller": "GetOrCreate",
+          "callee": "fmt.Errorf",
+          "lineNumber": 42
+        },
+        {
+          "caller": "GetOrCreate",
+          "callee": "time.Now().UTC",
+          "lineNumber": 44
+        },
+        {
+          "caller": "GetOrCreate",
+          "callee": "time.Now",
+          "lineNumber": 44
+        },
+        {
+          "caller": "GetOrCreate",
+          "callee": "uint64",
+          "lineNumber": 45
+        },
+        {
+          "caller": "GetOrCreate",
+          "callee": "r.coll.UpdateOne",
+          "lineNumber": 54
+        },
+        {
+          "caller": "GetOrCreate",
+          "callee": "options.UpdateOne().SetUpsert",
+          "lineNumber": 54
+        },
+        {
+          "caller": "GetOrCreate",
+          "callee": "options.UpdateOne",
+          "lineNumber": 54
+        },
+        {
+          "caller": "GetOrCreate",
+          "callee": "fmt.Errorf",
+          "lineNumber": 56
+        },
+        {
+          "caller": "UpdateProgress",
+          "callee": "fmt.Errorf",
+          "lineNumber": 63
+        },
+        {
+          "caller": "UpdateProgress",
+          "callee": "time.Now().UTC",
+          "lineNumber": 71
+        },
+        {
+          "caller": "UpdateProgress",
+          "callee": "time.Now",
+          "lineNumber": 71
+        },
+        {
+          "caller": "UpdateProgress",
+          "callee": "r.coll.UpdateOne",
+          "lineNumber": 73
+        },
+        {
+          "caller": "UpdateProgress",
+          "callee": "fmt.Errorf",
+          "lineNumber": 74
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "internal/storage/transfer_repo_test.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 65,
+      "nonEmptyLines": 57,
+      "functions": [
+        {
+          "name": "TestTransferRepoUpsertManyIsIdempotent",
+          "startLine": 12,
+          "endLine": 65,
+          "params": [
+            "t"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TestTransferRepoUpsertManyIsIdempotent",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "os.Getenv",
+          "lineNumber": 13
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "t.Skip",
+          "lineNumber": 15
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "context.WithTimeout",
+          "lineNumber": 18
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "context.Background",
+          "lineNumber": 18
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "cancel",
+          "lineNumber": 19
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "Connect",
+          "lineNumber": 21
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "t.Fatalf",
+          "lineNumber": 23
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "func() { _ = Disconnect(ctx, client) }",
+          "lineNumber": 25
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "Disconnect",
+          "lineNumber": 25
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "client.Database",
+          "lineNumber": 27
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "db.Drop",
+          "lineNumber": 28
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "t.Fatalf",
+          "lineNumber": 29
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "NewTransferRepo",
+          "lineNumber": 31
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "repo.EnsureIndexes",
+          "lineNumber": 32
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "t.Fatalf",
+          "lineNumber": 33
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "time.Now().UTC",
+          "lineNumber": 48
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "time.Now",
+          "lineNumber": 48
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "time.Now().UTC",
+          "lineNumber": 49
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "time.Now",
+          "lineNumber": 49
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "repo.UpsertMany",
+          "lineNumber": 51
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "t.Fatalf",
+          "lineNumber": 52
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "repo.UpsertMany",
+          "lineNumber": 54
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "t.Fatalf",
+          "lineNumber": 55
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "repo.coll.CountDocuments",
+          "lineNumber": 58
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "int64",
+          "lineNumber": 58
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "uint64",
+          "lineNumber": 58
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "t.Fatalf",
+          "lineNumber": 60
+        },
+        {
+          "caller": "TestTransferRepoUpsertManyIsIdempotent",
+          "callee": "t.Fatalf",
+          "lineNumber": 63
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "internal/storage/transfer_repo.go",
+      "language": "go",
+      "fileCategory": "code",
+      "totalLines": 140,
+      "nonEmptyLines": 129,
+      "functions": [
+        {
+          "name": "NewTransferRepo",
+          "startLine": 20,
+          "endLine": 22,
+          "params": [
+            "db"
+          ]
+        },
+        {
+          "name": "EnsureIndexes",
+          "startLine": 24,
+          "endLine": 36,
+          "params": [
+            "ctx"
+          ]
+        },
+        {
+          "name": "UpsertMany",
+          "startLine": 38,
+          "endLine": 70,
+          "params": [
+            "ctx",
+            "transfers"
+          ]
+        },
+        {
+          "name": "Find",
+          "startLine": 72,
+          "endLine": 92,
+          "params": [
+            "ctx",
+            "chainID",
+            "address",
+            "token",
+            "limit"
+          ]
+        },
+        {
+          "name": "AddressSummary",
+          "startLine": 95,
+          "endLine": 140,
+          "params": [
+            "ctx",
+            "chainID",
+            "address"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "TransferRepo",
+          "startLine": 16,
+          "endLine": 18,
+          "methods": [
+            "EnsureIndexes",
+            "UpsertMany",
+            "Find",
+            "AddressSummary"
+          ],
+          "properties": [
+            "coll"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TransferRepo",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "NewTransferRepo",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "EnsureIndexes",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "UpsertMany",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "Find",
+          "line": 72,
+          "isDefault": false
+        },
+        {
+          "name": "AddressSummary",
+          "line": 95,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "NewTransferRepo",
+          "callee": "db.Collection",
+          "lineNumber": 21
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "r.coll.Indexes().CreateMany",
+          "lineNumber": 25
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "r.coll.Indexes",
+          "lineNumber": 25
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "options.Index().SetUnique",
+          "lineNumber": 26
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "options.Index",
+          "lineNumber": 26
+        },
+        {
+          "caller": "EnsureIndexes",
+          "callee": "fmt.Errorf",
+          "lineNumber": 33
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "len",
+          "lineNumber": 39
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "make",
+          "lineNumber": 42
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "len",
+          "lineNumber": 42
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "time.Now().UTC",
+          "lineNumber": 44
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "time.Now",
+          "lineNumber": 44
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "append",
+          "lineNumber": 61
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "mongo.NewUpdateOneModel().\n\t\t\tSetFilter(bson.M{\"chain_id\": transfer.ChainID, \"tx_hash\": transfer.TxHash, \"log_index\": transfer.LogIndex}).\n\t\t\tSetUpdate(bson.M{\"$set\": set, \"$setOnInsert\": bson.M{\"created_at\": transfer.CreatedAt}}).\n\t\t\tSetUpsert",
+          "lineNumber": 61
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "mongo.NewUpdateOneModel().\n\t\t\tSetFilter(bson.M{\"chain_id\": transfer.ChainID, \"tx_hash\": transfer.TxHash, \"log_index\": transfer.LogIndex}).\n\t\t\tSetUpdate",
+          "lineNumber": 61
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "mongo.NewUpdateOneModel().\n\t\t\tSetFilter",
+          "lineNumber": 61
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "mongo.NewUpdateOneModel",
+          "lineNumber": 61
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "r.coll.BulkWrite",
+          "lineNumber": 66
+        },
+        {
+          "caller": "UpsertMany",
+          "callee": "fmt.Errorf",
+          "lineNumber": 67
+        },
+        {
+          "caller": "Find",
+          "callee": "strings.ToLower",
+          "lineNumber": 75
+        },
+        {
+          "caller": "Find",
+          "callee": "strings.ToLower",
+          "lineNumber": 79
+        },
+        {
+          "caller": "Find",
+          "callee": "r.coll.Find",
+          "lineNumber": 81
+        },
+        {
+          "caller": "Find",
+          "callee": "options.Find().SetSort(bson.D{{Key: \"block_number\", Value: -1}, {Key: \"log_index\", Value: -1}}).SetLimit",
+          "lineNumber": 81
+        },
+        {
+          "caller": "Find",
+          "callee": "options.Find().SetSort",
+          "lineNumber": 81
+        },
+        {
+          "caller": "Find",
+          "callee": "options.Find",
+          "lineNumber": 81
+        },
+        {
+          "caller": "Find",
+          "callee": "fmt.Errorf",
+          "lineNumber": 83
+        },
+        {
+          "caller": "Find",
+          "callee": "cursor.Close",
+          "lineNumber": 85
+        },
+        {
+          "caller": "Find",
+          "callee": "cursor.All",
+          "lineNumber": 88
+        },
+        {
+          "caller": "Find",
+          "callee": "fmt.Errorf",
+          "lineNumber": 89
+        },
+        {
+          "caller": "AddressSummary",
+          "callee": "strings.ToLower",
+          "lineNumber": 96
+        },
+        {
+          "caller": "AddressSummary",
+          "callee": "r.coll.Aggregate",
+          "lineNumber": 123
+        },
+        {
+          "caller": "AddressSummary",
+          "callee": "fmt.Errorf",
+          "lineNumber": 125
+        },
+        {
+          "caller": "AddressSummary",
+          "callee": "func() { _ = cursor.Close(ctx) }",
+          "lineNumber": 127
+        },
+        {
+          "caller": "AddressSummary",
+          "callee": "cursor.Close",
+          "lineNumber": 127
+        },
+        {
+          "caller": "AddressSummary",
+          "callee": "cursor.Next",
+          "lineNumber": 129
+        },
+        {
+          "caller": "AddressSummary",
+          "callee": "cursor.Decode",
+          "lineNumber": 131
+        },
+        {
+          "caller": "AddressSummary",
+          "callee": "fmt.Errorf",
+          "lineNumber": 132
+        },
+        {
+          "caller": "AddressSummary",
+          "callee": "cursor.Err",
+          "lineNumber": 136
+        },
+        {
+          "caller": "AddressSummary",
+          "callee": "fmt.Errorf",
+          "lineNumber": 137
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 5,
+        "classCount": 1
+      }
+    }
+  ]
+}

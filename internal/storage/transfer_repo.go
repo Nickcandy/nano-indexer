@@ -69,6 +69,16 @@ func (r *TransferRepo) UpsertMany(ctx context.Context, transfers []model.TokenTr
 	return nil
 }
 
+// MarkRemovedFrom marks non-removed transfers at and after fromBlock as removed.
+func (r *TransferRepo) MarkRemovedFrom(ctx context.Context, chainID int64, fromBlock uint64) error {
+	filter := bson.M{"chain_id": chainID, "removed": false, "block_number": bson.M{"$gte": fromBlock}}
+	update := bson.M{"$set": bson.M{"removed": true, "updated_at": time.Now().UTC()}}
+	if _, err := r.coll.UpdateMany(ctx, filter, update); err != nil {
+		return fmt.Errorf("mark removed transfers: %w", err)
+	}
+	return nil
+}
+
 func (r *TransferRepo) Find(ctx context.Context, chainID int64, address string, token string, limit int64) ([]model.TokenTransfer, error) {
 	filter := bson.M{"chain_id": chainID, "removed": false}
 	if address != "" {

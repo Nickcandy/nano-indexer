@@ -60,3 +60,36 @@ func (r *BlockRepo) UpsertMany(ctx context.Context, blocks []model.Block) error 
 	}
 	return nil
 }
+
+// FindCanonicalRange returns canonical blocks in ascending block number order.
+func (r *BlockRepo) FindCanonicalRange(ctx context.Context, chainID int64, from uint64, to uint64) ([]model.Block, error) {
+	filter := bson.M{
+		"chain_id": chainID,
+		"status":   "canonical",
+		"block_number": bson.M{
+			"$gte": from,
+			"$lte": to,
+		},
+	}
+	cursor, err := r.coll.Find(ctx, filter, options.Find().SetSort(bson.D{{Key: "block_number", Value: 1}}))
+	if err != nil {
+		return nil, fmt.Errorf("find canonical blocks: %w", err)
+	}
+	defer func() { _ = cursor.Close(ctx) }()
+
+	var blocks []model.Block
+	if err := cursor.All(ctx, &blocks); err != nil {
+		return nil, fmt.Errorf("decode canonical blocks: %w", err)
+	}
+	return blocks, nil
+}
+
+// MarkOrphanedFrom marks canonical blocks at and after fromBlock as orphaned.
+func (r *BlockRepo) MarkOrphanedFrom(ctx context.Context, chainID int64, fromBlock uint64) error {
+	filter := bson.M{"chain_id": chainID, "status": "canonical", "block_number": bson.M{"$gte": fromBlock}}
+	update := bson.M{"$set": bson.M{"status": "orphaned", "updated_at": time.Now().UTC()}}
+	if _, err := r.coll.UpdateMany(ctx, filter, update); err != nil {
+		return fmt.Errorf("mark orphaned blocks: %w", err)
+	}
+	return nil
+}

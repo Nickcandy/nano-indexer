@@ -23,6 +23,7 @@ type Log struct {
 	Data             string   `json:"data"`
 	BlockNumber      string   `json:"blockNumber"`
 	BlockHash        string   `json:"blockHash"`
+	BlockTimestamp   string   `json:"blockTimestamp"`
 	TransactionHash  string   `json:"transactionHash"`
 	TransactionIndex string   `json:"transactionIndex"`
 	LogIndex         string   `json:"logIndex"`
