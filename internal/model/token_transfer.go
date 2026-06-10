@@ -31,3 +31,14 @@ type AddressSummary struct {
 	TokenCount    int      `bson:"token_count" json:"token_count"`
 	Tokens        []string `bson:"tokens" json:"tokens"`
 }
+
+// AddressDetection is a transparent heuristic view for smart-money MVP screening.
+type AddressDetection struct {
+	ChainID int64          `bson:"chain_id" json:"chain_id"`
+	Address string         `bson:"address" json:"address"`
+	Score   int            `bson:"score" json:"score"`
+	Level   string         `bson:"level" json:"level"`
+	Tags    []string       `bson:"tags" json:"tags"`
+	Reasons []string       `bson:"reasons" json:"reasons"`
+	Summary AddressSummary `bson:"summary" json:"summary"`
+}

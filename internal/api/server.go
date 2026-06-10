@@ -14,6 +14,7 @@ import (
 type transferReader interface {
 	Find(ctx context.Context, chainID int64, address string, token string, limit int64) ([]model.TokenTransfer, error)
 	AddressSummary(ctx context.Context, chainID int64, address string) (model.AddressSummary, error)
+	DetectAddress(ctx context.Context, chainID int64, address string) (model.AddressDetection, error)
 }
 
 func NewServer(transferRepo ...transferReader) *echo.Echo {
@@ -66,6 +67,21 @@ func NewServer(transferRepo ...transferReader) *echo.Echo {
 				return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 			}
 			return c.JSON(http.StatusOK, summary)
+		})
+		e.GET("/addresses/:address/detection", func(c echo.Context) error {
+			chainID, err := strconv.ParseInt(defaultString(c.QueryParam("chain_id"), "1"), 10, 64)
+			if err != nil {
+				return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid chain_id"})
+			}
+			address := strings.ToLower(strings.TrimSpace(c.Param("address")))
+			if !isHexAddress(address) {
+				return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid address"})
+			}
+			detection, err := repo.DetectAddress(c.Request().Context(), chainID, address)
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+			}
+			return c.JSON(http.StatusOK, detection)
 		})
 	}
 

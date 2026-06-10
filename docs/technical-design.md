@@ -246,6 +246,7 @@ MVP API：
 GET /healthz
 GET /transfers?address=0x...&token=0x...&limit=50
 GET /addresses/:address/summary
+GET /addresses/:address/detection
 ```
 
 API 要明确处理：
@@ -254,6 +255,14 @@ API 要明确处理：
 - 地址格式错误。
 - 数据为空。
 - Mongo 查询失败。
+
+`/addresses/:address/detection` 是 `smart-money-radar` 的 MVP 入口，只基于当前已索引的 ERC20 Transfer 聚合做透明启发式评分：
+
+- 高频转账。
+- 多 token 覆盖。
+- 同时存在转入和转出。
+
+第一版不计算 PnL，不拉外部价格，不实时查询链上数据。
 
 错误不能吞掉，handler 返回明确 HTTP 状态码和错误信息。
 

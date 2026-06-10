@@ -118,3 +118,91 @@ func TestTransferRepoMarkRemovedFrom(t *testing.T) {
 		t.Fatalf("expected two removed transfers, got %d", removedCount)
 	}
 }
+
+func TestBuildAddressDetectionNoData(t *testing.T) {
+	summary := model.AddressSummary{
+		ChainID: 8453,
+		Address: "0x1111111111111111111111111111111111111111",
+		Tokens:  []string{},
+	}
+
+	detection := buildAddressDetection(summary)
+
+	if detection.Score != 0 || detection.Level != "no_data" {
+		t.Fatalf("unexpected detection: %+v", detection)
+	}
+	if len(detection.Tags) != 0 {
+		t.Fatalf("expected no tags, got %v", detection.Tags)
+	}
+}
+
+func TestBuildAddressDetectionSmartMoneyCandidate(t *testing.T) {
+	summary := model.AddressSummary{
+		ChainID:       8453,
+		Address:       "0x1111111111111111111111111111111111111111",
+		SentCount:     10,
+		ReceivedCount: 12,
+		TotalCount:    22,
+		TokenCount:    5,
+		Tokens:        []string{"0xtoken1", "0xtoken2", "0xtoken3", "0xtoken4", "0xtoken5"},
+	}
+
+	detection := buildAddressDetection(summary)
+
+	if detection.Score != 90 || detection.Level != "smart_money_candidate" {
+		t.Fatalf("unexpected detection: %+v", detection)
+	}
+	if !hasString(detection.Tags, "multi_token") || !hasString(detection.Tags, "active_wallet") || !hasString(detection.Tags, "two_way_flow") {
+		t.Fatalf("unexpected tags: %v", detection.Tags)
+	}
+}
+
+func TestBuildAddressDetectionWatchlist(t *testing.T) {
+	summary := model.AddressSummary{
+		ChainID:    8453,
+		Address:    "0x1111111111111111111111111111111111111111",
+		TotalCount: 5,
+		TokenCount: 2,
+		Tokens:     []string{"0xtoken1", "0xtoken2"},
+	}
+
+	detection := buildAddressDetection(summary)
+
+	if detection.Score != 35 || detection.Level != "normal" {
+		t.Fatalf("unexpected detection: %+v", detection)
+	}
+
+	summary.SentCount = 1
+	summary.ReceivedCount = 1
+	detection = buildAddressDetection(summary)
+	if detection.Score != 55 || detection.Level != "watchlist" {
+		t.Fatalf("unexpected detection with two-way flow: %+v", detection)
+	}
+}
+
+func TestBuildAddressDetectionNormal(t *testing.T) {
+	summary := model.AddressSummary{
+		ChainID:       8453,
+		Address:       "0x1111111111111111111111111111111111111111",
+		SentCount:     1,
+		ReceivedCount: 0,
+		TotalCount:    1,
+		TokenCount:    1,
+		Tokens:        []string{"0xtoken1"},
+	}
+
+	detection := buildAddressDetection(summary)
+
+	if detection.Score != 0 || detection.Level != "normal" {
+		t.Fatalf("unexpected detection: %+v", detection)
+	}
+}
+
+func hasString(values []string, target string) bool {
+	for _, value := range values {
+		if value == target {
+			return true
+		}
+	}
+	return false
+}

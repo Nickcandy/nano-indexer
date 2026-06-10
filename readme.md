@@ -114,6 +114,12 @@ Invoke-RestMethod "http://localhost:8080/transfers?chain_id=8453&token=0xTokenAd
 Invoke-RestMethod "http://localhost:8080/addresses/0x1111111111111111111111111111111111111111/summary?chain_id=8453"
 ```
 
+检测聪明钱候选地址：
+
+```powershell
+Invoke-RestMethod "http://localhost:8080/addresses/0x1111111111111111111111111111111111111111/detection?chain_id=8453"
+```
+
 本地 demo 验证点：
 
 1. `sync_states` 中对应 token 的 `latest_scanned_block` 持续推进。
@@ -144,6 +150,7 @@ go test -v ./internal/storage -run TestTransferRepoUpsertManyIsIdempotent
 - `GET /healthz`。
 - `GET /transfers`。
 - `GET /addresses/:address/summary`。
+- `GET /addresses/:address/detection`。
 - ERC20 `Transfer` scanner。
 - `blocks`、`token_transfers`、`sync_states` 集合与索引。
 - config、healthz、parser、API、scanner 和 storage 关键单元测试。
@@ -159,4 +166,4 @@ go test -v ./internal/storage -run TestTransferRepoUpsertManyIsIdempotent
 1. 增加最近 N 个已确认 block hash 校验。
 2. 检测到 reorg 后标记 orphan block 和 removed transfers。
 3. 从共同祖先附近重新扫描。
-4. 为 `smart-money-radar` 增加地址/token 统计 API。
+4. 为 `smart-money-radar` 增加候选地址列表和 token 统计 API。

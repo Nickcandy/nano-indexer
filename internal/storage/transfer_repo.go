@@ -148,3 +148,61 @@ func (r *TransferRepo) AddressSummary(ctx context.Context, chainID int64, addres
 	}
 	return model.AddressSummary{ChainID: chainID, Address: address, Tokens: []string{}}, nil
 }
+
+func (r *TransferRepo) DetectAddress(ctx context.Context, chainID int64, address string) (model.AddressDetection, error) {
+	summary, err := r.AddressSummary(ctx, chainID, address)
+	if err != nil {
+		return model.AddressDetection{}, fmt.Errorf("detect address: %w", err)
+	}
+	return buildAddressDetection(summary), nil
+}
+
+func buildAddressDetection(summary model.AddressSummary) model.AddressDetection {
+	detection := model.AddressDetection{
+		ChainID: summary.ChainID,
+		Address: summary.Address,
+		Level:   "normal",
+		Tags:    []string{},
+		Reasons: []string{},
+		Summary: summary,
+	}
+	if summary.TotalCount == 0 {
+		detection.Level = "no_data"
+		detection.Reasons = append(detection.Reasons, "no indexed transfers for this address")
+		return detection
+	}
+
+	if summary.TotalCount >= 20 {
+		detection.Score += 40
+		detection.Tags = append(detection.Tags, "active_wallet")
+		detection.Reasons = append(detection.Reasons, "20 or more indexed transfers")
+	} else if summary.TotalCount >= 5 {
+		detection.Score += 20
+		detection.Tags = append(detection.Tags, "active_wallet")
+		detection.Reasons = append(detection.Reasons, "5 or more indexed transfers")
+	}
+	if summary.TokenCount >= 5 {
+		detection.Score += 30
+		detection.Tags = append(detection.Tags, "multi_token")
+		detection.Reasons = append(detection.Reasons, "interacted with 5 or more tokens")
+	} else if summary.TokenCount >= 2 {
+		detection.Score += 15
+		detection.Tags = append(detection.Tags, "multi_token")
+		detection.Reasons = append(detection.Reasons, "interacted with 2 or more tokens")
+	}
+	if summary.SentCount > 0 && summary.ReceivedCount > 0 {
+		detection.Score += 20
+		detection.Tags = append(detection.Tags, "two_way_flow")
+		detection.Reasons = append(detection.Reasons, "has both sent and received transfers")
+	}
+	if detection.Score > 100 {
+		detection.Score = 100
+	}
+
+	if detection.Score >= 70 {
+		detection.Level = "smart_money_candidate"
+	} else if detection.Score >= 40 {
+		detection.Level = "watchlist"
+	}
+	return detection
+}
